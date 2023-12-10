@@ -58,6 +58,7 @@ function load(){
     }
     upgrades.load();
     stats.load();
+    achievements.load();
 };
 
 function reset(){
@@ -65,6 +66,7 @@ function reset(){
         stats.reset(true);
         upgrades.reset();
         reactor.reset();
+        achievements.reset(true);
         localStorage.clear();
         save();
     }

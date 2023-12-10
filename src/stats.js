@@ -10,7 +10,7 @@ function addStats(){
 
 function Stat(name, decimal){
     this.elems = null;
-    this.values = [0,0,0]; //value, max, total
+    this.values = [0,0,0,0]; //value, max, total, max this run
     this.exponent = decimal;
     this.decimal = Math.pow(10, decimal);
 };
@@ -21,6 +21,9 @@ Stat.prototype = {
         this.values[0] = value;
         if(this.values[0] > this.values[2]){
             this.values[2] = this.values[0];
+        }
+        if (this.values[0] > this.values[3]){
+            this.values[3] = this.values[0];
         }
     },
     
@@ -39,6 +42,9 @@ Stat.prototype = {
         if(this.values[0] > this.values[2]){
             this.values[2] = this.values[0];
         }
+        if (this.values[0] > this.values[3]) {
+            this.values[3] = this.values[0];
+        }
     },
     
     get: function(i){
@@ -46,7 +52,7 @@ Stat.prototype = {
     },
     
     getAll: function(i){
-        return [this.get(0), this.get(1), this.get(2)];
+        return [this.get(0), this.get(1), this.get(2), this.get(3)];
     },
     
     draw: function(){
@@ -57,7 +63,11 @@ Stat.prototype = {
                 this.elems[i].innerHTML = ""+stringify(v);
             }
         }
-    }
+    },
+
+    newRun: function() {
+        this.values[3] = this.values[0];
+    },
 };
 
 function Stats(){
@@ -83,11 +93,12 @@ Stats.prototype = {
     reset: function(hardReset){
         if(hardReset){
             for(var stat in this.stats){
-                this.setAll(stat, [0, 0, 0]);
+                this.setAll(stat, [0, 0, 0, 0]);
             }
         }else{
             for(var stat in this.stats){
                 this.set(stat, 0)
+                this.newRun(stat);
             }
         }
     },
@@ -102,6 +113,10 @@ Stats.prototype = {
     
     setAll: function(stat, values){
         this.stats[stat].setAll(values);
+    },
+
+    newRun: function(stat) {
+        this.stats[stat].newRun();
     },
     
     add: function(stat, value){

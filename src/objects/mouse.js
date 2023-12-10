@@ -1,6 +1,8 @@
 function Mouse(canvas){
     this.onCanvas = false;
     canvas.addEventListener("mousedown", this.click.bind(this));
+    //canvas.addEventListener("touchstart", this.click.bind(this), false);
+    //canvas.addEventListener("touchend", function(e) {e.preventDefault();}, false);
     canvas.addEventListener("mousemove", this.move.bind(this));
     canvas.addEventListener("mouseout", this.move.bind(this));
 };
@@ -27,6 +29,7 @@ Mouse.prototype = {
             ball.explode();
             stats.add("clicks", 1);
         }
+        event.preventDefault();
     },
     
     move: function(event){

@@ -1,6 +1,6 @@
 function calc_prestige() {
     //return Math.floor(Math.max(Math.log10(Math.max((stats.get("energy") - 10000) / 68500, 0)), 0)); //Math.floor(stats.get("energy")/100)/100;
-    return Math.floor(Math.max(logBase((stats.get("energy") + 10000000) / 7130000, 1.5), 0));
+    return Math.floor(Math.max(logBase((stats.getAll("energy")[3] + 10000000) / 7130000, 1.5), 0));
 }
 
 function calc_board_size() {

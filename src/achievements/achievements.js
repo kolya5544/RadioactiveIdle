@@ -41,7 +41,7 @@ Achievement.prototype = {
             iDiv.appendChild(iSpan);
 
             if (this.reward != null) {
-                iP = document.createAttribute("p");
+                iP = document.createElement("p");
                 iP.className = "subtext no_upper_margin";
                 iP.innerHTML = `<strong>Reward:</strong> ${this.reward}`;
 
@@ -66,6 +66,11 @@ Achievements.prototype = {
         this.addNewAchievement("New Beginnings", "Earn your first Energy", check_new_beginnings);
         this.addNewAchievement("Chain Reaction", "Get a continuous chain reaction of more than 2000 atoms", check_chain_reaction);
         this.addNewAchievement("Reactor Incremental", "Get your first Heat Point", check_reactor_incremental);
+        this.addNewAchievement("Nine Cirlces of Hell", "Sacrifice a total of 9 times (each Sacrifice should be for at least 1 Heat Points)", check_nine_circles_of_hell);
+        this.addNewAchievement("All It Takes Is A Spark", "Upgrade your Energy Multiplier 5 times", check_all_it_takes_is_a_spark, "start new games with 2 additional atoms");
+        this.addNewAchievement("Confined Space", "Get a total of 50.000 explosions", check_confined_space, "reactor size increase is significantly delayed");
+        this.addNewAchievement("Cookie Clicker", "Click a total of 1.000 times (pro tip: it's sometimes faster to click than to wait!)", check_cookie_clicker);
+        //this.addNewAchievement("The One Achievement to Rule Them All", "", check_cookie_clicker);
 
         this.draw();
     },
@@ -126,6 +131,8 @@ Achievements.prototype = {
     },
     
     update: function(){
+        if (offlineProgressOn || !document.hasFocus()) return;
+
         for(var ach in this.achievements){
             ach = this.achievements[ach];
             if (ach.completed) continue;

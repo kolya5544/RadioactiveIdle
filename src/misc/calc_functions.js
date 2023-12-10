@@ -4,7 +4,7 @@ function calc_prestige() {
 }
 
 function calc_board_size() {
-    return (stats.get("explodes")-stats.get("clicks")+200) * 0.85;
+    return Math.max((stats.get("explosions")-stats.get("clicks")+200+calc_reactor_delay()) * 0.85, 173);
 }
 
 function calc_actual_speed(current_speed = null) {
@@ -20,4 +20,30 @@ function calc_actual_explosion_time(current_expl = null) {
 function calc_actual_explosion_size(current_size = null) {
     if (current_size == null) current_size = upgrades.get("size");
     return (current_size+5)/10;
+}
+
+function calc_upgrade_cost_growth(factor, base, currentPrice, num = 1) {
+    return factor*(Math.pow(base,currentPrice)-Math.pow(base,currentPrice+num))/(1-base);
+}
+
+function calc_upgrade_cost_max(factor, base, money, currentPrice) {
+    return Math.floor(Math.log(Math.pow(base,currentPrice)-money*(1-base)/factor)/Math.log(base) - currentPrice);
+}
+
+function calc_actual_multiplier(current_mult = null){
+    if (current_mult == null) current_mult = upgrades.get("multiplier");
+    return Math.max(0, logBase((current_mult * 1.5), 1.9));
+}
+
+function calc_additional_balls() {
+    return achievements.get("All It Takes Is A Spark") ? 2 : 0;
+}
+
+function calc_reactor_delay() {
+    return achievements.get("Confined Space") ? -100 : 0;
+}
+
+function calc_enrichment(current_enr = null) {
+    if (current_enr == null) current_enr = upgrades.get("enrichment");
+    return Math.max(0, logBase((stats.get("heat")+1) * current_enr, 1.2));
 }

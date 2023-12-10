@@ -5,13 +5,23 @@ function initUpgrades(){
     upgrades.addUpgrade("balls", 0, "Extra Atoms").cost(50, 1.1).button([1, 0]);
 };
 
-function Upgrade(res, elem, decimal, displayName){
+function initHeatUpgrades() {
+    upgrades.addUpgrade("multiplier", 0, "Energy Multiplier", "heat", "Get more energy per each explosion").cost(1, 2).button([1, 0]);
+    upgrades.addUpgrade("enrichment", 0, "Enriched Atoms", "heat", "Get more energy the more Heat Points you currently have.", 16).cost(48, 4).button([1, 0]);
+}
+
+function Upgrade(res, elem, decimal, displayName, currency="energy", description = null, currency_requirement = null, costGrowthFunction = calc_upgrade_cost_growth, maxBuyFunction = calc_upgrade_cost_max){
     this.res = res;
     this.value = 0;
     this.exponent = decimal;
     this.decimal = Math.pow(10, decimal);
     this.tableElem = elem;
     this.displayName = displayName;
+    this.currency = currency;
+    this.costGrowthFunction = costGrowthFunction;
+    this.maxBuyFunction = maxBuyFunction;
+    this.description = description;
+    this.currency_requirement = currency_requirement;
 };
 
 Upgrade.prototype = {
@@ -20,10 +30,10 @@ Upgrade.prototype = {
             if(typeof num === "undefined"){
                 num = 1;
             }
-            return factor*(Math.pow(base,this.get())-Math.pow(base,this.get()+num))/(1-base)
+            return this.costGrowthFunction(factor, base, this.get(), num);
         }
         this.getMaxBuy = function(money){
-            return Math.floor(Math.log(Math.pow(base,this.get())-money*(1-base)/factor)/Math.log(base) - this.get());
+            return this.maxBuyFunction(factor, base, money, this.get());
         }
         this.costElem = this.tableElem.children[4];
         return this;
@@ -56,16 +66,16 @@ Upgrade.prototype = {
         if(amount<=0){
             amount = 1;
         }
-        return stats.get("energy") >= this.getCost(amount);
+        return stats.get(this.currency) >= this.getCost(amount);
     },
     
     buy: function(amount){
         if(amount <= 0){
-            var amount = this.getMaxBuy(stats.get("energy"))
+            var amount = this.getMaxBuy(stats.get(this.currency))
         }
         var cost = this.getCost(amount)
-        if(stats.get("energy") >= cost){
-            stats.add("energy", -cost);
+        if(stats.get(this.currency) >= cost){
+            stats.add(this.currency, -cost);
             this.add(amount);
         }
         this.updateSubtext();
@@ -78,14 +88,19 @@ Upgrade.prototype = {
         if(typeof this.getCost !== "undefined"){
             var cost = this.getCost();
             this.costElem.innerHTML = " "+stringify(cost);
-            if(stats.get("energy") >= cost){
+            if(stats.get(this.currency) >= cost){
                 this.buttonElems[0].className = "button active"
                 this.buttonElems[1].className = "button active"
             }else{
                 this.buttonElems[0].className = "button inactive"
                 this.buttonElems[1].className = "button inactive"
             }
+            if (this.currency_requirement != null) {
+                visible = stats.getAll(this.currency)[2] >= this.currency_requirement;
+                this.tableElem.style.display = visible ? "" : "none";
+            }
         }
+        this.updateSubtext();
     },
 
     updateSubtext: function(){
@@ -111,6 +126,14 @@ Upgrade.prototype = {
             case "balls":
                 prev = this.value;
                 next = this.value + 1;
+                break;
+            case "multiplier":
+                prev = calc_actual_multiplier(this.value) + 1;
+                next = calc_actual_multiplier(this.value + 1) + 1;
+                break;
+            case "enrichment":
+                prev = calc_enrichment(this.value);
+                next = calc_enrichment(this.value + 1);
                 break;
         }
 
@@ -144,18 +167,21 @@ Upgrades.prototype = {
         localStorage.setItem("res", JSON.stringify(toSave));
     },
     
-    reset: function(){
+    reset: function(hard_reset = false){
         for(var res in this.upgrades){
+            if (this.upgrades[res].currency == "heat" && !hard_reset) continue;
             this.set(res, 0);
         }
     },
     
-    addUpgrade: function(res, decimal, displayName = "Basic Upgrade"){
+    addUpgrade: function(res, decimal, displayName = "Basic Upgrade", currency = "energy", description = null, currency_requirement = null){
+        this.upgrades[res] = new Upgrade(res, null, decimal, displayName, currency, description, currency_requirement);
+
         // render new upgrade
-        renderUpgrade(res, displayName);
+        if (currency == "energy") this.upgrades[res].tableElem = renderUpgrade(res, displayName);
+        if (currency == "heat") this.upgrades[res].tableElem = renderHeatUpgrade(this.upgrades[res]);
         elem = document.getElementById(res);
 
-        this.upgrades[res] = new Upgrade(res, elem, decimal, displayName);
         this.upgrades[res].updateSubtext();
         return this.upgrades[res];
     },
@@ -175,7 +201,7 @@ Upgrades.prototype = {
     update: function(){
         for(var key in this.upgrades){
             if(typeof this.upgrades[key].getCost !== "undefined" &&
-                    this.upgrades[key].getCost()<=stats.get("energy")){
+                    this.upgrades[key].getCost()<=stats.get(this.upgrades[key].currency)){
                 screens.hasNew("upgrades");
             }
         }

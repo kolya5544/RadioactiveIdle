@@ -2,8 +2,8 @@ function Reactor(){
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     
-    this.width = (this.canvas.width*(stats.get("explodes")-stats.get("clicks")+200))/1000;
-    this.height = (this.canvas.height*(stats.get("explodes")-stats.get("clicks")+200))/1000;
+    this.width = (this.canvas.width*calc_board_size())/1000;
+    this.height = (this.canvas.height*calc_board_size())/1000;
     
     this.balls = new Objects(Ball);
     this.explodes = new Objects(Explosion);
@@ -74,7 +74,7 @@ Reactor.prototype = {
     },
     
     spawnDelay: function(){
-        var count = upgrades.get("balls")+10-this.balls.count-this.explodes.count;
+        var count = upgrades.get("balls")+10-this.balls.count-this.explodes.count+calc_additional_balls();
         return 10*(1+this.explodes.count)/count;
     },
     

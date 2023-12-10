@@ -19,24 +19,12 @@ function renderReactor() {
     reactorCont.appendChild(iCanvas);
 }
 
-function renderUpgrade(name, displayName) {
-    let upgradeCont = document.getElementById("upgradeContainer");
-    
-    // <tr id="size">
-    /*let iTr = document.createElement("tr");
-    iTr.id = name;*/
-
-    /*
-    <td>Larger Explosions: </td>
-                                <td class="res">0</td>
-                                <td class='group'><span class='button'>1</span><span class='button'>max</span></td>
-                                <td>cost: </td>
-                                <td>0</td>
-    */
-   //upgradeCont.appendChild(iTr);
+function renderUpgrade(name, displayName, upgradeCont = null, additionalClassContainer = "", description = null, upgr_instance = null) {
+    if (upgradeCont == null) upgradeCont = document.getElementById("upgradeContainer");
 
     let iDiv = document.createElement("div");
     iDiv.className = "upgrade-item";
+    if (additionalClassContainer.length > 0) iDiv.classList.add(additionalClassContainer);
     iDiv.id = name;
 
     let iSpan = document.createElement("span");
@@ -71,31 +59,27 @@ function renderUpgrade(name, displayName) {
     iP.innerText = "(1 → 1.1)";
     iDiv.appendChild(iP);
 
+    if (description) {
+        iP = document.createElement("p");
+        iP.className = "lowMargin subtext";
+        iP.innerText = description;
+        iDiv.appendChild(iP);
+    }
+
+    if (upgr_instance != null) {
+        if (upgr_instance.currency_requirement != null) {
+            if (stats.get(upgr_instance.currency) < upgr_instance.currency_requirement) iDiv.style.display = "none";
+        }
+    }
+
     upgradeCont.appendChild(iDiv);
-   
-   /*let iTd = document.createElement("td");
-   iTd.innerText = `${displayName}: `;
-   iTr.appendChild(iTd);
-   iTd = document.createElement("td");
-   iTd.className = "res";
-   iTd.innerText = "0";
-   iTr.appendChild(iTd);
-   iTd = document.createElement("td");
-   iTd.className = "group";
-   iTr.appendChild(iTd);
-   let iBtn = document.createElement("span"); iBtn.className = "button"; iBtn.innerText = "1";
-   iTd.appendChild(iBtn);
-   iBtn = document.createElement("span"); iBtn.className = "button"; iBtn.innerText = "max";
-   iTd.appendChild(iBtn);
-   iTd = document.createElement("td");
-   iTd.innerText = "cost: ";
-   iTr.appendChild(iTd);
-   iTd = document.createElement("td");
-   iTd.innerText = "0";
-   iTr.appendChild(iTd);
-   iTd = document.createElement("td");
-   iTd.innerText = "1 → 1.1";
-   iTr.appendChild(iTd);*/
+
+    return iDiv;
+}
+
+function renderHeatUpgrade(upgrade) {
+    let heatCont = document.getElementById("prestigeContainer");
+    return renderUpgrade(upgrade.res, upgrade.displayName, heatCont, "heatUpgradeContainer", upgrade.description, upgrade);
 }
 
 function renderStats() {
@@ -159,14 +143,16 @@ function renderPrestige() {
     iP.id = "heatCount";
     iP.className = "lowMargin";
     iP.innerHTML = "You have <span id=\"heat\">0</span> Heat Points";
-    if (stats.get("heat") < 1) iP.style.display = "none";
+    if (stats.getAll("heat")[2] < 1) iP.style.display = "none";
 
-    prestigeCont.appendChild(iP);
+    prestigeCont.prepend(iP);
+    //prestigeCont.appendChild(iP);
     
 
     // <p class="lowMargin"><span id="prestige" class="button active">Sacrifice</span> all upgrades and reset board size to gain <span id="heatup">0</span> Heat Points.</p>
     iP = document.createElement("p");
-    iP.className = "lowMargin";
+    iP.className = "medium_margin_top";
+    //iP.className = "no_upper_margin";
 
     let iSpan = document.createElement("span");
     iSpan.id = "prestige";
@@ -174,7 +160,7 @@ function renderPrestige() {
     iSpan.innerText = "Sacrifice";
 
     iP.appendChild(iSpan);
-    iP.appendChild(document.createTextNode(" all upgrades and reset board size to gain "));
+    iP.appendChild(document.createTextNode(" normal upgrades and reset board size to gain "));
 
     iSpan = document.createElement("span");
     iSpan.id = "heatup";

@@ -13,10 +13,10 @@ Ball.prototype = {
         }
         reactor.balls.remove(this);
         reactor.explodes.add(this, group);
-        var pts = group[0]*(1+stats.get("heat"));
+        var pts = group[0]*(1+calc_actual_multiplier()+calc_enrichment());
         reactor.points.add(reactor.transformed(this), pts);
         stats.add("energy", pts);
-        stats.add("explodes", 1);
+        stats.add("explosions", 1);
         stats.set("chain", group[0]+1);
     },
     

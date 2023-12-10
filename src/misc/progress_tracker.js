@@ -10,7 +10,7 @@ function trackProgress() {
     }
 
     // first stage - unlocking Sacrifice
-    if (!isSacrificeUnlocked() || stats.get("heat") < 1) {
+    if (!isSacrificeUnlocked() || stats.getAll("heat")[2] < 1) {
         stage = 1;
     } else {
         stage = 2;
@@ -32,7 +32,7 @@ function update_progress_value() {
     let perc = 0;
 
     if (stage == 1) {
-        perc = logBase((stats.get("energy") + 139000) / 139000, 5) * (Math.log(5) / Math.log(6));
+        perc = logBase((stats.getAll("energy")[3] + 139000) / 139000, 5) * (Math.log(5) / Math.log(6));
         if (perc >= 1) showPrestige();
     } else if (stage == 2) {
         perc = 0;
@@ -58,5 +58,5 @@ function update_progress_text() {
 }
 
 function isSacrificeUnlocked() {
-    return stats.get("heat") > 0 || stats.get("energy") >= 6.95*Math.pow(10, 5);
+    return stats.getAll("heat")[2] > 0 || stats.getAll("energy")[3] >= 6.95*Math.pow(10, 5);
 }

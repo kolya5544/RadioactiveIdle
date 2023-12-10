@@ -1,9 +1,10 @@
 function addStats(){
     stats.addStat("energy", 2);
-    stats.addStat("explodes", 0);
+    stats.addStat("explosions", 0);
     stats.addStat("chain", 0);
     stats.addStat("clicks", 0);
     stats.addStat("heat", 2);
+    stats.addStat("sacrifices", 0);
 
     renderStats();
 };
@@ -59,7 +60,7 @@ Stat.prototype = {
         for(var i in this.values){
             if(this.elems[i]){ //not null
                 let v = this.get(i);
-                if (v == 0) { this.elems[i].parentElement.style.display = "none"; } else { this.elems[i].parentElement.style.display = ""; }
+                if (this.getAll(i)[2] == 0) { this.elems[i].parentElement.style.display = "none"; } else { this.elems[i].parentElement.style.display = ""; }
                 this.elems[i].innerHTML = ""+stringify(v);
             }
         }
@@ -72,6 +73,7 @@ Stat.prototype = {
 
 function Stats(){
     this.stats = {};
+    this.time_of_beginning = 0;
 };
 
 Stats.prototype = {
@@ -80,6 +82,9 @@ Stats.prototype = {
         for(var stat in saved){
             this.setAll(stat, saved[stat]);
         }
+        var tob = localStorage.getItem("time_of_beginning");
+        this.time_of_beginning = parseInt(tob);
+        if (tob == null) this.time_of_beginning = parseInt(Date.now());
     },
     
     save: function(){
@@ -88,6 +93,8 @@ Stats.prototype = {
             toSave[stat] = this.getAll(stat);
         }
         localStorage.setItem("stats", JSON.stringify(toSave));
+        localStorage.setItem("time_of_beginning", this.time_of_beginning);
+        localStorage.setItem("time_of_save", parseInt(Date.now()));
     },
     
     reset: function(hardReset){

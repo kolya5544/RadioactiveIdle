@@ -133,6 +133,10 @@ h1 {
     transition: all 0.7s ease-in-out;
 }
 
+.medium_margin_top {
+    margin-top: 6px;
+}
+
 #achievementFooterContent {
     text-align: center;
     font-family: cursive, sans-serif, arial;
@@ -146,6 +150,14 @@ h1 {
 .achievementShown {
     bottom: 0px;
     display: inherit;
+}
+
+.heatUpgradeContainer {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 3px;
+    background-color: rgb(242, 208, 255);
+    border: 1px blue dotted;
 }
 
 /*REACTOR*/

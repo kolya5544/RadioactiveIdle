@@ -6,7 +6,12 @@ var offlineProgressTicksLeft = 0;
 
 var interval = 16.666666; // ms
 var expected = Date.now() + interval;
-setTimeout(step, interval);
+
+function start() {
+    expected = Date.now() + interval;
+    setTimeout(step, interval);
+}
+
 function step(depth = 0) {
     var dn = Date.now();
     var dt = dn - expected; // the drift (positive for overshooting)

@@ -1,23 +1,27 @@
 var scheduler, screens, fps;
 var reactor, upgrades, stats, achievements;
 
+var loadedSuccessfully = false;
+
 function init(){
     document.getElementById("save").addEventListener("click", save);
     document.getElementById("reset").addEventListener("click", reset);
-    
+
     upgrades = new Upgrades();
     initUpgrades();
+
+    achievements = new Achievements();
+    achievements.init();
     
     stats = new Stats();
     addStats();
 
     renderReactor();
     reactor = new Reactor();
+
+    initHeatUpgrades();
     
     screens = new Screens();
-
-    achievements = new Achievements();
-    achievements.init();
 
     screens.addScreen("reactor", reactor, "Reactor");
     screens.addScreen("upgrades", upgrades, "Upgrades");
@@ -32,6 +36,8 @@ function init(){
     load();
 
     renderPrestige();
+
+    start();
     
     //requestAnimFrame(update);
 };
@@ -45,6 +51,8 @@ function update(draw_graphics = true){
 };
 
 function save(){
+    if (!loadedSuccessfully) return;
+
     localStorage.setItem("ver", "v0.1");
     upgrades.save();
     stats.save();
@@ -59,12 +67,20 @@ function load(){
     upgrades.load();
     stats.load();
     achievements.load();
+
+    // update subtext
+    for (var upgr in this.upgrades.upgrades) {
+        upgr = this.upgrades.upgrades[upgr];
+        upgr.updateSubtext();
+    }
+
+    loadedSuccessfully = true;
 };
 
 function reset(){
     if(confirm("This will reset everything including any bonus score.")){
         stats.reset(true);
-        upgrades.reset();
+        upgrades.reset(true);
         reactor.reset();
         achievements.reset(true);
         localStorage.clear();
@@ -72,8 +88,22 @@ function reset(){
     }
 };
 
+function exportGame() {
+    console.log(JSON.stringify(localStorage));
+}
+
+function importGame(game) {
+    var data = JSON.parse(game);
+    Object.keys(data).forEach(function (k) {
+        localStorage.setItem(k, JSON.stringify(data[k]));
+    });
+    save = null;
+}
+
 function prestige(){
-    var bonus = calc_prestige()+stats.get("heat");
+    var prev = stats.get("heat");
+    var prevSac = stats.get("sacrifices");
+    var bonus = calc_prestige();
 
     if (bonus > 0) {
         document.getElementById("heatCount").style.display = "";
@@ -81,7 +111,10 @@ function prestige(){
 
     stats.reset(false);
     upgrades.reset();
-    stats.set("heat", bonus);
+    stats.set("sacrifices", prevSac);
+    if (bonus > 0) stats.add("sacrifices", 1);
+    stats.set("heat", prev)
+    stats.add("heat", bonus);
     reactor.reset();
     save();
 };

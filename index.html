@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Radioactive Idle: Chain Reaction</title>
+        <link rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="src/misc/renderer.js"></script>
+        <script type="text/javascript" src="src/misc/calc_functions.js"></script>
+        <script type="text/javascript" src="src/misc/scheduler.js"></script>
+        <script type="text/javascript" src="src/misc/fps.js"></script>
+        <script type="text/javascript" src="src/misc/helper.js"></script>
+        <script type="text/javascript" src="src/misc/screens.js"></script>
+        <script type="text/javascript" src="src/objects/ball.js"></script>
+        <script type="text/javascript" src="src/objects/mouse.js"></script>
+        <script type="text/javascript" src="src/objects/explosion.js"></script>
+        <script type="text/javascript" src="src/objects/point.js"></script>
+        <script type="text/javascript" src="src/objects/reactor.js"></script>
+        <script type="text/javascript" src="src/objects/objects.js"></script>
+        <script type="text/javascript" src="src/upgrades.js"></script>
+        <script type="text/javascript" src="src/stats.js"></script>
+        <script type="text/javascript" src="src/achievements/achievements.js"></script>
+        <script type="text/javascript" src="src/achievements/check_func.js"></script>
+        <script type="text/javascript" src="src/misc/progress_tracker.js"></script>
+        <script type="text/javascript" src="src/main.js"></script>
+        <script type="text/javascript" src="src/tick.js"></script>
+    </head>
+    <body onload="init();" onunload="save();">
+        <div id="meta">
+            <span id="save" class='button active'>Save</span>
+            <span id="reset" class='button active'>Reset</span>
+            | <a href="https://github.com/kolya5544/radioactive_idle">GitHub</a> | v0.1 | FPS: <span id="fps"></span>
+        </div>
+        <div id="centering">
+            <h1>Radioactive Idle</h1>
+            <div id="above">
+                <div id="tabs"></div>
+                <div id="energyContainer">
+                    Energy: <span id="energy">0</span>
+                </div>
+            </div>
+            <div id="main">
+                <div id="scroll">
+                    <div id="reactor" class="screen"></div>
+                    <div id="upgrades" class="screen">
+                        <div id="upgradeContainer"></div>
+                        <div id="prestigeContainer"></div>
+                        <div id="progressContainer">
+                            <p id="progressText" class="center">Progress to unlocking Sacrifice:</p>
+                            <div id="progressBar">0%</div>
+                        </div>
+                    </div>
+                    <div id="stats" class="screen">
+                        <table id="statsContainer"></table>
+                    </div>
+                    <div id="achievements" class="screen achievements">
+                        <div class="achievement">
+                            <p class="no_lower_margin">New Beginnings - abc</p><span class="achievement_status">COMPLETED</span>
+                            <p class="subtext no_upper_margin"><strong>Reward:</strong> +5</p>
+                        </div>
+                        <div class="achievement">
+                            <p>New Beginnings 2 - grwegwerg</p>
+                        </div>
+                        <div class="achievement">
+                            <p>New Beginnings 3 - fghweriufghweuyfgweyufgweyufgwefyuwgefyuwefgyuew fgyuwe gyufwegyu fgyuwegyf uwegyu fgyuwegy ufwegyufeiuw hf iqwegfuyqwg fuyqwg fweh fuiyewg fuyweg fyugw efygu ewgyuf wegyufgy uwegyuf gyuwegyfu wegyu</p><span class="achievement_status">COMPLETED</span>
+                        </div>
+                        <div class="achievement">
+                            <p>New Beginnings 3 - fghweriufghweuyfgweyufgweyufgwefyuwgefyuwefgyuew fgyuwe gyufwegyu fgyuwegyf uwegyu fgyuwegy ufwegyufeiuw hf iqwegfuyqwg fuyqwg fweh fuiyewg fuyweg fyugw efygu ewgyuf wegyufgy uwegyuf gyuwegyfu wegyu</p><span class="achievement_status">COMPLETED</span>
+                        </div>
+                        <div class="achievement">
+                            <p>New Beginnings 3 - fghweriufghweuyfgweyufgweyufgwefyuwgefyuwefgyuew fgyuwe gyufwegyu fgyuwegyf uwegyu fgyuwegy ufwegyufeiuw hf iqwegfuyqwg fuyqwg fweh fuiyewg fuyweg fyugw efygu ewgyuf wegyufgy uwegyuf gyuwegyfu wegyu</p><span class="achievement_status">COMPLETED</span>
+                        </div>
+                        <div class="achievement">
+                            <p>New Beginnings 3 - fghweriufghweuyfgweyufgweyufgwefyuwgefyuwefgyuew fgyuwe gyufwegyu fgyuwegyf uwegyu fgyuwegy ufwegyufeiuw hf iqwegfuyqwg fuyqwg fweh fuiyewg fuyweg fyugw efygu ewgyuf wegyufgy uwegyuf gyuwegyfu wegyu</p><span class="achievement_status">COMPLETED</span>
+                        </div>
+                        <div class="achievement">
+                            <p>New Beginnings 3 - fghweriufghweuyfgweyufgweyufgwefyuwgefyuwefgyuew fgyuwe gyufwegyu fgyuwegyf uwegyu fgyuwegy ufwegyufeiuw hf iqwegfuyqwg fuyqwg fweh fuiyewg fuyweg fyugw efygu ewgyuf wegyufgy uwegyuf gyuwegyfu wegyu</p><span class="achievement_status">COMPLETED</span>
+                        </div>
+                        <div class="achievement">
+                            <p>New Beginnings 3 - fghweriufghweuyfgweyufgweyufgwefyuwgefyuwefgyuew fgyuwe gyufwegyu fgyuwegyf uwegyu fgyuwegy ufwegyufeiuw hf iqwegfuyqwg fuyqwg fweh fuiyewg fuyweg fyugw efygu ewgyuf wegyufgy uwegyuf gyuwegyfu wegyu</p><span class="achievement_status">COMPLETED</span>
+                        </div>
+                        <div class="achievement">
+                            <p>New Beginnings 3 - fghweriufghweuyfgweyufgweyufgwefyuwgefyuwefgyuew fgyuwe gyufwegyu fgyuwegyf uwegyu fgyuwegy ufwegyufeiuw hf iqwegfuyqwg fuyqwg fweh fuiyewg fuyweg fyugw efygu ewgyuf wegyufgy uwegyuf gyuwegyfu wegyu</p><span class="achievement_status">COMPLETED</span>
+                        </div>
+                        <div class="achievement">
+                            <p>New Beginnings 3 - fghweriufghweuyfgweyufgweyufgwefyuwgefyuwefgyuew fgyuwe gyufwegyu fgyuwegyf uwegyu fgyuwegy ufwegyufeiuw hf iqwegfuyqwg fuyqwg fweh fuiyewg fuyweg fyugw efygu ewgyuf wegyufgy uwegyuf gyuwegyfu wegyu</p><span class="achievement_status">COMPLETED</span>
+                        </div>
+                        <div class="achievement">
+                            <p>New Beginnings 3 - fghweriufghweuyfgweyufgweyufgwefyuwgefyuwefgyuew fgyuwe gyufwegyu fgyuwegyf uwegyu fgyuwegy ufwegyufeiuw hf iqwegfuyqwg fuyqwg fweh fuiyewg fuyweg fyugw efygu ewgyuf wegyufgy uwegyuf gyuwegyfu wegyu</p><span class="achievement_status">COMPLETED</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

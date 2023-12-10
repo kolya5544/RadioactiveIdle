@@ -1,0 +1,214 @@
+/*BUTTONS*/
+.inactive {
+    background: #CCCCCC;
+}
+
+.active {
+    background: #EEEEEE;
+}
+
+.active:hover, .new:hover, .pressed {
+    background: #EEEEFF;
+}
+
+.new {
+    background: #FFEAEA;
+}
+
+.button {
+    display: inline-block;
+    text-align: center;
+    padding: 0px 5px 1px 5px;
+    border: 1px solid black;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.group>* {
+    width: 30px;
+    margin-left: -1px;
+    border-radius: 0px;
+}
+
+.group>*:first-child {
+    border-radius: 6px 0px 0px 6px;
+}
+
+.group>*:last-child {
+    border-radius: 0px 6px 6px 0px;
+}
+
+#tabs>* {
+    width: 110px;
+    margin: 0px -4px 0px -1px;
+    border-radius: 0px;
+}
+
+#tabs>*:first-child {
+    border-radius: 6px 0px 0px 0px;
+}
+
+#tabs>*:last-child {
+    border-radius: 0px 6px 0px 0px;
+}
+
+/*OVERLAY*/
+
+#meta{
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 100%;
+    text-align: right;
+    overflow: hidden;
+}
+
+#fps{
+    display: inline-block;
+    text-align: left;
+    width:23px;
+}
+
+#centering {
+    display:block;
+    margin: 0px auto;
+    width: 1000px;
+}
+
+h1 {
+    display: block;
+    text-align: center;
+    margin: -3px auto 5px auto;
+}
+
+#above {
+    position: relative;
+}
+
+#above>* {
+    display: inline-block;
+}
+
+#energyContainer {
+    position: absolute;
+    right: 0px;
+}
+
+#energy {
+    display: inline-block;
+    width: 60px;
+}
+
+#main {
+    position: relative;
+    width: 1000px;
+    height: 750px;
+    overflow: hidden;
+    outline: 1px solid black;
+}
+
+#scroll {
+    position: absolute;
+    width: 400%; /*100% for each tab*/
+    transition: left 0.15s ease-in-out;
+}
+
+.screen {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: -3px;
+    width: 1000px;
+    height: 750px;
+    outline: 1px solid black;
+}
+
+/*REACTOR*/
+
+#canvas {
+    cursor: pointer;
+}
+
+/*UPGRADES*/
+
+#upgrades>* {
+    display:inline-block;
+    vertical-align: top;
+    margin: 10px -4px 0px 10px;
+    width: 490px;
+    height: 440px;
+}
+
+.lowMargin {
+    margin: 2px;
+}
+
+.center {
+    text-align: center;
+    margin: 2px;
+}
+
+.subtext {
+    font-size: smaller;
+    vertical-align: sub;
+}
+
+.nameText {
+    display: inline-block;
+    width: 150px;
+}
+
+#progressContainer {
+    width: 100%;
+    height: 40px;
+    position: relative;
+    bottom: -31%;
+    margin-left: -1px;
+    margin-top: 14px;
+}
+
+#progressBar {
+    width: 0%;
+    height: 30px;
+    background-color: #70d2ff;
+    text-align: center;
+    line-height: 30px;
+    color: black;
+    border: 1px solid black;
+}
+
+.res {
+    display: inline-block;
+    width: 55px;
+}
+
+/*ACHIEVEMENTS*/
+
+.achievements {
+    overflow: auto;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.achievement {
+    position: relative;
+    padding: 5px;
+    padding-left: 16px;
+    margin: 5px;
+    border: 1px solid lightgray;
+}
+
+.no_lower_margin {
+    margin-bottom: 0px;
+}
+
+.no_upper_margin {
+    margin-top: 0px;
+}
+
+.achievement_status {
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    padding: 2px;
+    border: 1px darkgreen solid;
+}

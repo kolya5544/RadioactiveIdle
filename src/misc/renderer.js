@@ -129,6 +129,19 @@ function renderStats() {
             document.getElementById(key+"Total"),
             document.getElementById(key+"Max")];
     });
+
+    // render playtime stat
+    let iTr = document.createElement("tr");
+
+    let iTd = document.createElement("td");
+    iTd.innerText = `Total Playtime: `;
+    iTr.appendChild(iTd);
+    iTd = document.createElement("td");
+    iTd.innerText = `0`;
+    iTd.id = `playtimeTotal`;
+    iTr.appendChild(iTd);
+
+    statsCont.appendChild(iTr);
 }
 
 function renderPrestige() {

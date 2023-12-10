@@ -1,17 +1,19 @@
 var scheduler, screens, fps;
 var reactor, upgrades, stats, achievements;
 
+var playtime = null;
+
 var loadedSuccessfully = false;
 
 function init(){
     document.getElementById("save").addEventListener("click", save);
     document.getElementById("reset").addEventListener("click", reset);
 
-    upgrades = new Upgrades();
-    initUpgrades();
-
     achievements = new Achievements();
     achievements.init();
+
+    upgrades = new Upgrades();
+    initUpgrades();
     
     stats = new Stats();
     addStats();
@@ -37,6 +39,10 @@ function init(){
 
     renderPrestige();
 
+    if (playtime == null) {
+        playtime = document.getElementById("playtimeTotal");
+    }
+
     start();
     
     //requestAnimFrame(update);
@@ -46,6 +52,10 @@ function update(draw_graphics = true){
     scheduler.update();
     screens.update();
     screens.draw();
+
+    // update playtime
+    playtime.innerText = forHumans(Math.floor((parseInt(Date.now()) - this.stats.time_of_beginning)/1000));
+
     trackProgress();
     //requestAnimFrame(update);
 };
@@ -109,12 +119,19 @@ function prestige(){
         document.getElementById("heatCount").style.display = "";
     }
 
+    // "no longer needed" achievement check
+    if (bonus >= 4 && upgrades.get("time") == 0) {
+        achievements.setCompletion("No Longer Needed", true, true);
+    }
+
     stats.reset(false);
     upgrades.reset();
     stats.set("sacrifices", prevSac);
     if (bonus > 0) stats.add("sacrifices", 1);
     stats.set("heat", prev)
     stats.add("heat", bonus);
+    if (achievements.get("The Instigator")) stats.add("energy", 200);
+    stats.time_of_last_prestige = parseInt(Date.now());
     reactor.reset();
     save();
 };

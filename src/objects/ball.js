@@ -1,5 +1,5 @@
 function Ball(){
-    this.radius = (upgrades.get("size")+5)/5;
+    this.radius = calc_actual_explosion_size()*2;
     this.x = randomInt(this.radius-reactor.width/2, reactor.width/2-this.radius);
     this.y = randomInt(this.radius-reactor.height/2, reactor.height/2-this.radius);
     this.ang = Math.random()*Math.PI*2;
@@ -21,7 +21,7 @@ Ball.prototype = {
     },
     
     update: function(){
-        this.radius = (upgrades.get("size")+5)/5;
+        this.radius = calc_actual_explosion_size()*2;
         this.x += Math.cos(this.ang)*calc_actual_speed();
         if(this.x - this.radius <= -reactor.width/2){
             this.ang = Math.PI-this.ang;

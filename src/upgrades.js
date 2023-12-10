@@ -8,6 +8,18 @@ function initUpgrades(){
 function initHeatUpgrades() {
     upgrades.addUpgrade("multiplier", 0, "Energy Multiplier", "heat", "Get more energy per each explosion").cost(1, 2).button([1, 0]);
     upgrades.addUpgrade("enrichment", 0, "Enriched Atoms", "heat", "Get more energy the more Heat Points you currently have.", 16).cost(48, 4).button([1, 0]);
+    upgrades.addUpgrade("heat_up", 0, "Efficient Extraction", "heat", "Get two times more Heat Points on Sacrifice.", 128).cost(200, 3).button([1, 0]);
+    upgrades.addUpgrade("meltdown", 0, "Meltdown", "heat", "Passively generate x100 this run's best chain reaction output every second.", 1000, meltdown_allow_once, meltdown_buy_max).cost(1000, 1).button([1, 0]);
+}
+
+function meltdown_allow_once(factor, base, current, number) {
+    if (doesHaveMeltdownBought()) return -1;
+    return 1000;
+}
+
+function meltdown_buy_max(factor, base, money, current) {
+    if (doesHaveMeltdownBought()) return 0;
+    return (money >= 1000) ? 1 : 0;
 }
 
 function Upgrade(res, elem, decimal, displayName, currency="energy", description = null, currency_requirement = null, costGrowthFunction = calc_upgrade_cost_growth, maxBuyFunction = calc_upgrade_cost_max){
@@ -74,7 +86,15 @@ Upgrade.prototype = {
             var amount = this.getMaxBuy(stats.get(this.currency))
         }
         var cost = this.getCost(amount)
-        if(stats.get(this.currency) >= cost){
+        if(stats.get(this.currency) >= cost && cost != -1){
+            if (amount >= 50 && this.res == "size") { // we need to go bigger achievement check
+                achievements.setCompletion("We Need To Go BIGGER", true, true);
+            }
+
+            if (this.res == "enrichment") { // rich boi achievement check
+                achievements.setCompletion("Rich Boi", true, true);
+            }
+
             stats.add(this.currency, -cost);
             this.add(amount);
         }
@@ -84,11 +104,17 @@ Upgrade.prototype = {
     draw: function(){
         let valueElem = this.tableElem.children[1];
 
+        if (this.getCost() == -1) {
+            this.tableElem.children[2].style.visibility = "hidden";
+            this.tableElem.children[3].style.visibility = "hidden";
+            this.tableElem.children[4].style.visibility = "hidden";
+        }
+
         valueElem.innerHTML = ""+stringify(this.get());
         if(typeof this.getCost !== "undefined"){
             var cost = this.getCost();
             this.costElem.innerHTML = " "+stringify(cost);
-            if(stats.get(this.currency) >= cost){
+            if(stats.get(this.currency) >= cost && cost != -1){
                 this.buttonElems[0].className = "button active"
                 this.buttonElems[1].className = "button active"
             }else{
@@ -174,8 +200,8 @@ Upgrades.prototype = {
         }
     },
     
-    addUpgrade: function(res, decimal, displayName = "Basic Upgrade", currency = "energy", description = null, currency_requirement = null){
-        this.upgrades[res] = new Upgrade(res, null, decimal, displayName, currency, description, currency_requirement);
+    addUpgrade: function(res, decimal, displayName = "Basic Upgrade", currency = "energy", description = null, currency_requirement = null, costGrowthFunction = calc_upgrade_cost_growth, maxBuyFunction = calc_upgrade_cost_max){
+        this.upgrades[res] = new Upgrade(res, null, decimal, displayName, currency, description, currency_requirement, costGrowthFunction, maxBuyFunction);
 
         // render new upgrade
         if (currency == "energy") this.upgrades[res].tableElem = renderUpgrade(res, displayName);

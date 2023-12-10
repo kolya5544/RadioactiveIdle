@@ -74,7 +74,7 @@ Reactor.prototype = {
     },
     
     spawnDelay: function(){
-        var count = upgrades.get("balls")+10-this.balls.count-this.explodes.count+calc_additional_balls();
+        var count = upgrades.get("balls")+10-this.balls.count-this.explodes.count+calc_additional_balls_reward();
         return 10*(1+this.explodes.count)/count;
     },
     

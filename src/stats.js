@@ -74,6 +74,8 @@ Stat.prototype = {
 function Stats(){
     this.stats = {};
     this.time_of_beginning = 0;
+    this.time_of_save = 0;
+    this.time_of_last_prestige = 0;
 };
 
 Stats.prototype = {
@@ -82,9 +84,14 @@ Stats.prototype = {
         for(var stat in saved){
             this.setAll(stat, saved[stat]);
         }
-        var tob = localStorage.getItem("time_of_beginning");
-        this.time_of_beginning = parseInt(tob);
-        if (tob == null) this.time_of_beginning = parseInt(Date.now());
+        let tob = localStorage.getItem("time_of_beginning");
+        this.time_of_beginning = tob == null ? 0 : parseInt(tob);
+
+        let tos = localStorage.getItem("time_of_save");
+        this.time_of_save = tos == null ? 0 : parseInt(tos);
+
+        let top = localStorage.getItem("time_of_last_prestige");
+        this.time_of_last_prestige = top == null ? 0 : parseInt(top);
     },
     
     save: function(){
@@ -95,6 +102,7 @@ Stats.prototype = {
         localStorage.setItem("stats", JSON.stringify(toSave));
         localStorage.setItem("time_of_beginning", this.time_of_beginning);
         localStorage.setItem("time_of_save", parseInt(Date.now()));
+        localStorage.setItem("time_of_last_prestige", this.time_of_last_prestige);
     },
     
     reset: function(hardReset){

@@ -35,7 +35,8 @@ function update_progress_value() {
         perc = logBase((stats.getAll("energy")[3] + 139000) / 139000, 5) * (Math.log(5) / Math.log(6));
         if (perc >= 1) showPrestige();
     } else if (stage == 2) {
-        perc = 0;
+        perc = logBase((stats.getAll("heat")[0] + 100) / 100, 5) * (Math.log(5) / Math.log(11));
+        //if (perc >= 1) allowMeltdown();
     }
 
     perc = Math.min(Math.max(perc, 0), 1);
@@ -59,4 +60,8 @@ function update_progress_text() {
 
 function isSacrificeUnlocked() {
     return stats.getAll("heat")[2] > 0 || stats.getAll("energy")[3] >= 6.95*Math.pow(10, 5);
+}
+
+function doesHaveMeltdownBought() {
+    return upgrades.get("meltdown") > 0;
 }

@@ -7,15 +7,15 @@ function Achievement(name, description, checkFunc = null, reward = null) {
 };
 Achievement.prototype = {
     setCompletion: function(v, first_time = false) {
-        this.completed = v;
-
-        if (first_time && v) {
+        if (first_time && v && !this.completed) {
             achievements.triggerModal(this);
         }
+
+        this.completed = v;
     },
 
     draw: function() {
-        let curr_name = this.name.replace(" ", "_").toLowerCase();
+        let curr_name = this.name.replace(" ", "_").replace(/[^\w\s]/gi, '').toLowerCase();
         let el = document.getElementById(curr_name);
         if (el == null) {
             // draw it!
@@ -69,7 +69,16 @@ Achievements.prototype = {
         this.addNewAchievement("Nine Cirlces of Hell", "Sacrifice a total of 9 times (each Sacrifice should be for at least 1 Heat Points)", check_nine_circles_of_hell);
         this.addNewAchievement("All It Takes Is A Spark", "Upgrade your Energy Multiplier 5 times", check_all_it_takes_is_a_spark, "start new games with 2 additional atoms");
         this.addNewAchievement("Confined Space", "Get a total of 50.000 explosions", check_confined_space, "reactor size increase is significantly delayed");
+        this.addNewAchievement("Don't You Have Something Better To Do?", "Play the game a total of 4 hours", check_dont_you_have_something_better_to_do);
         this.addNewAchievement("Cookie Clicker", "Click a total of 1.000 times (pro tip: it's sometimes faster to click than to wait!)", check_cookie_clicker);
+        this.addNewAchievement("We Need To Go BIGGER", "Buy more than 50 bigger explosion upgrades in a single click", null, "explosions are slightly bigger");
+        this.addNewAchievement("No Longer Needed", "Sacrifice for at least four Heat Points without upgrading Longer Explosions at all", null, "Energy Multiplier is a bit more powerful");
+        this.addNewAchievement("Positively Charged", "Get a total of 1 billion Energy", check_positively_charged);
+        this.addNewAchievement("Rich Boi", "Get Enriched Atoms", null, "a lot more lenient Sacrifice formula for bigger Energy values");
+        this.addNewAchievement("The Instigator", "Reach 200 million Energy in no more than two reactor clicks", check_the_instigator, "start every new run with 200 Energy");
+        this.addNewAchievement("Speedrun", "Reach 1 heat point in less than 100 explosions", check_speedrun, "you get twice as much heat points on sacrifice");
+        this.addNewAchievement("The Burning Souls", "Sacrifice for a total of 666 Heat Points", check_the_burning_souls);
+        this.addNewAchievement("Bomberman", "Reach 200 million Energy in no more than two reactor clicks", check_the_instigator, "start every new run with 200 Energy");
         //this.addNewAchievement("The One Achievement to Rule Them All", "", check_cookie_clicker);
 
         this.draw();
@@ -100,7 +109,7 @@ Achievements.prototype = {
     },
 
     setCompletion: function(ach_name, value, first_time = false) {
-        this.achievements[ach_name].setCompletion(value);
+        this.achievements[ach_name].setCompletion(value, first_time);
     },
 
     triggerModal: function(ach) {
@@ -135,11 +144,11 @@ Achievements.prototype = {
 
         for(var ach in this.achievements){
             ach = this.achievements[ach];
+            ach.draw();
             if (ach.completed) continue;
             if (ach.checkFunc == null) continue;
             var l = ach.checkFunc();
             if (l) ach.setCompletion(true, true);
-            ach.draw();
         }
     },
     

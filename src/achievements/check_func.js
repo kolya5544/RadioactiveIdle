@@ -25,3 +25,23 @@ function check_nine_circles_of_hell() {
 function check_cookie_clicker() {
     return stats.getAll("clicks")[1] >= 1000;
 }
+
+function check_dont_you_have_something_better_to_do() {
+    return this.stats ? (Date.now() - this.stats.time_of_beginning) / 1000 >= 3600*4 : false;
+}
+
+function check_positively_charged() {
+    return stats.getAll("energy")[1] >= 1_000_000_000;
+}
+
+function check_the_instigator() {
+    return stats.get("energy") > 200_000_000 && stats.get("clicks") <= 2;
+}
+
+function check_speedrun() {
+    return calc_prestige() >= 1 && stats.get("explosions") <= 100;
+}
+
+function check_the_burning_souls() {
+    return stats.getAll("heat")[1] >= 666;
+}

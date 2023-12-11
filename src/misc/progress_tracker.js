@@ -12,8 +12,10 @@ function trackProgress() {
     // first stage - unlocking Sacrifice
     if (!isSacrificeUnlocked() || stats.getAll("heat")[2] < 1) {
         stage = 1;
-    } else {
+    } else if (!doesHaveMeltdownBought()) {
         stage = 2;
+    } else {
+        stage = 3;
     }
 
     if (currentProgressStage == stage) {
@@ -37,6 +39,12 @@ function update_progress_value() {
     } else if (stage == 2) {
         perc = logBase((stats.getAll("heat")[0] + 100) / 100, 5) * (Math.log(5) / Math.log(11));
         //if (perc >= 1) allowMeltdown();
+    } else if (stage == 3) {
+        if (stats.get("heat") <= 5000) {
+            perc = Math.log(stats.get("heat") / 1000, 10) * (Math.log(10) / Math.log(5));
+        } else {
+            perc = Math.log((stats.getAll("heat")[0] - 794.702), 1.9)-12;
+        }
     }
 
     perc = Math.min(Math.max(perc, 0), 1);
@@ -52,6 +60,9 @@ function update_progress_text() {
             break;
         case 2:
             progressText.innerText = "Progress to meltdown:";
+            break;
+        case 3:
+            progressText.innerText = "Progress to next Matter Unit:";
             break;
         default:
             break;

@@ -1,12 +1,16 @@
 function calc_prestige() {
     //return Math.floor(Math.max(Math.log10(Math.max((stats.get("energy") - 10000) / 68500, 0)), 0)); //Math.floor(stats.get("energy")/100)/100;
     let en = stats.getAll("energy")[3];
-    let correction = ((upgrades.get("heat_up")+1) * calc_more_hp_reward());
+    let correction = calc_heat_up() * calc_more_hp_reward();
     if (en < (6.95 * Math.pow(10, 5) / correction)) return 0;
     let a = logBase((en + 10_000_000) / 7_130_000, 1.5);
-    console.log(a);
     if (en >= 1.1813 * Math.pow(10, 8)) a = logBase((en - 100_000_000)/7_130_000, 1.14);
-    return Math.floor(Math.max(a, 0) * correction);
+    return Math.floor(Math.max(a, 0) * correction + calc_eight_bits_of_heat_reward());
+}
+
+function calc_heat_up(current_h = null) {
+    if (current_h == null) current_h = upgrades.get("heat_up");
+    return current_h+1;
 }
 
 function calc_board_size() {
@@ -59,11 +63,23 @@ function calc_more_hp_reward() {
     return achievements.get("Speedrun") ? 2 : 1;
 }
 
+function calc_get_hours_of_playtime() {
+    return Math.floor((parseInt(Date.now()) - this.stats.time_of_beginning)/1000) / 3600;
+}
+
 function calc_no_longer_needed_reward() {
     return achievements.get("No Longer Needed") ? 1.1 : 1;
+}
+
+function calc_eight_bits_of_heat_reward() {
+    return achievements.get("Eight Bits of Heat") ? 0.01 * calc_get_hours_of_playtime() : 0;
 }
 
 function calc_enrichment(current_enr = null) {
     if (current_enr == null) current_enr = upgrades.get("enrichment");
     return Math.max(0, logBase((stats.get("heat")+1) * current_enr, 1.2));
+}
+
+function calc_energy_output(group = 0) {
+    return group*(1+calc_actual_multiplier()+calc_enrichment()+calc_eight_bits_of_heat_reward()*2);
 }

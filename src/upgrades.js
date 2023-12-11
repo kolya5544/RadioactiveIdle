@@ -8,8 +8,8 @@ function initUpgrades(){
 function initHeatUpgrades() {
     upgrades.addUpgrade("multiplier", 0, "Energy Multiplier", "heat", "Get more energy per each explosion").cost(1, 2).button([1, 0]);
     upgrades.addUpgrade("enrichment", 0, "Enriched Atoms", "heat", "Get more energy the more Heat Points you currently have.", 16).cost(48, 4).button([1, 0]);
-    upgrades.addUpgrade("heat_up", 0, "Efficient Extraction", "heat", "Get two times more Heat Points on Sacrifice.", 128).cost(200, 3).button([1, 0]);
-    upgrades.addUpgrade("meltdown", 0, "Meltdown", "heat", "Passively generate x100 this run's best chain reaction output every second.", 1000, meltdown_allow_once, meltdown_buy_max).cost(1000, 1).button([1, 0]);
+    upgrades.addUpgrade("heat_up", 0, "Efficient Extraction", "heat", "Increase the amount of Heat Points you get on Sacrifice.", 128).cost(200, 3).button([1, 0]);
+    upgrades.addUpgrade("meltdown", 0, "Meltdown", "heat", "Passively generate x100 this run's best chain reaction output every second. Starts an uncontrollable chain reaction, consuming everything on its way.", 1000, meltdown_allow_once, meltdown_buy_max).cost(1000, 1).button([1, 0]);
 }
 
 function meltdown_allow_once(factor, base, current, number) {
@@ -95,6 +95,10 @@ Upgrade.prototype = {
                 achievements.setCompletion("Rich Boi", true, true);
             }
 
+            if (this.res == "meltdown") { // chernobyl disaster achievement check
+                achievements.setCompletion("Chernobyl Disaster", true, true);
+            }
+
             stats.add(this.currency, -cost);
             this.add(amount);
         }
@@ -132,6 +136,7 @@ Upgrade.prototype = {
     updateSubtext: function(){
         let subtextEl = this.tableElem.children[5];
         var suffix = "";
+        var prefix = "";
         var prev = -1;
         var next = -1;
 
@@ -157,6 +162,11 @@ Upgrade.prototype = {
                 prev = calc_actual_multiplier(this.value) + 1;
                 next = calc_actual_multiplier(this.value + 1) + 1;
                 break;
+            case "heat_up":
+                prev = calc_heat_up(this.value);
+                next = calc_heat_up(this.value + 1);
+                prefix = "x";
+                break;
             case "enrichment":
                 prev = calc_enrichment(this.value);
                 next = calc_enrichment(this.value + 1);
@@ -167,7 +177,7 @@ Upgrade.prototype = {
         prev = Math.floor(prev * 100) / 100;
         next = Math.floor(next * 100) / 100;
 
-        subtextEl.innerText = `(${prev}${suffix} → ${next}${suffix})`;
+        subtextEl.innerText = `(${prefix}${prev}${suffix} → ${prefix}${next}${suffix})`;
     }
 };
 

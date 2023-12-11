@@ -15,7 +15,7 @@ Achievement.prototype = {
     },
 
     draw: function() {
-        let curr_name = this.name.replace(" ", "_").replace(/[^\w\s]/gi, '').toLowerCase();
+        let curr_name = this.name.replace(/[^\w\s]/gi, '').replace(" ", "_").toLowerCase();
         let el = document.getElementById(curr_name);
         if (el == null) {
             // draw it!
@@ -78,7 +78,11 @@ Achievements.prototype = {
         this.addNewAchievement("The Instigator", "Reach 200 million Energy in no more than two reactor clicks", check_the_instigator, "start every new run with 200 Energy");
         this.addNewAchievement("Speedrun", "Reach 1 heat point in less than 100 explosions", check_speedrun, "you get twice as much heat points on sacrifice");
         this.addNewAchievement("The Burning Souls", "Sacrifice for a total of 666 Heat Points", check_the_burning_souls);
-        this.addNewAchievement("Bomberman", "Reach 200 million Energy in no more than two reactor clicks", check_the_instigator, "start every new run with 200 Energy");
+        this.addNewAchievement("Eight Bits of Heat", "Get more than 256 Heat Points in a single Sacrifice", null, "you get a very small bonus to your Energy and Heat output for every hour played");
+        this.addNewAchievement("Chernobyl Disaster", "Start a reactor Meltdown", null);
+        this.addNewAchievement("Radioactive: Now Idle!", "Sacrifice for at least 16 Heat Points without a single upgrade or click", null);
+        this.addNewAchievement("Modern Problems Require a Lot of Energy", "Get 100 billion Energy", check_modern_problems);
+        //this.addNewAchievement("Bomberman", "Reach 200 million Energy in no more than two reactor clicks", check_the_instigator, "start every new run with 200 Energy");
         //this.addNewAchievement("The One Achievement to Rule Them All", "", check_cookie_clicker);
 
         this.draw();
@@ -140,7 +144,8 @@ Achievements.prototype = {
     },
     
     update: function(){
-        if (offlineProgressOn || !document.hasFocus()) return;
+        //console.log(document.hasFocus());
+        //if (offlineProgressOn || !document.hasFocus()) return;
 
         for(var ach in this.achievements){
             ach = this.achievements[ach];

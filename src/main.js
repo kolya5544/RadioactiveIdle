@@ -56,9 +56,38 @@ function update(draw_graphics = true){
     // update playtime
     playtime.innerText = forHumans(Math.floor((parseInt(Date.now()) - this.stats.time_of_beginning)/1000));
 
+    // process meltdown
+    if (upgrades.get("meltdown") > 0) {
+        processMeltdown();
+    }
+
     trackProgress();
     //requestAnimFrame(update);
 };
+
+function processMeltdown() {
+    let current = stats.getAll("chain")[3];
+    let perSecond = calc_energy_output(current)*100;
+    let perTick = perSecond / 60;
+
+    stats.add("energy", perTick);
+
+    // start a random reaction if less than 10% of balls are exploded
+    if (reactor.explodes.count <= (reactor.balls.count + reactor.explodes.count) * 0.10 && reactor.balls.count > 0 && tickCount % 6 == 0) {
+        for(var i in reactor.balls.objects){
+            var ball = reactor.balls.objects[i];
+            ball.explode([current]);
+            return;
+        }
+    }
+
+    // once per 3 seconds, spawn a big random explosion in the background
+    /*if (tickCount % (60 * 3) == 0) {
+        console.log("att");
+        var expl = new Explosion(null, undefined, true);
+        reactor.expl.add(expl);
+    }*/
+}
 
 function save(){
     if (!loadedSuccessfully) return;
@@ -122,6 +151,16 @@ function prestige(){
     // "no longer needed" achievement check
     if (bonus >= 4 && upgrades.get("time") == 0) {
         achievements.setCompletion("No Longer Needed", true, true);
+    }
+
+    // "eight bits of heat" achievement check
+    if (bonus >= 256) {
+        achievements.setCompletion("Eight Bits of Heat", true, true);
+    }
+
+    // "Radioactive: Now Idle!" achievement check
+    if (bonus >= 16 && upgrades.get("time") == 0 && upgrades.get("size") == 0 && upgrades.get("balls") == 0 && upgrades.get("speed") == 0 && stats.get("clicks") == 0) {
+        achievements.setCompletion("Radioactive: Now Idle!", true, true);
     }
 
     stats.reset(false);

@@ -1,4 +1,4 @@
-function Explosion(ball, group){
+function Explosion(ball, group = null){
     this.x = ball.x;
     this.y = ball.y;
     this.color = ball.color;
@@ -6,7 +6,7 @@ function Explosion(ball, group){
     this.dr = calc_actual_explosion_size();
     this.inner = 0;
     this.timeLeft = calc_actual_explosion_time();
-    this.group = group;
+    this.group = group == null ? ball.group : group;
     this.group[0]+=1;
 };
 

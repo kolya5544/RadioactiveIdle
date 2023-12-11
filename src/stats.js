@@ -5,11 +5,13 @@ function addStats(){
     stats.addStat("clicks", 0);
     stats.addStat("heat", 2);
     stats.addStat("sacrifices", 0);
+    stats.addStat("matter", 0);
 
     renderStats();
 };
 
 function Stat(name, decimal){
+    this.name = name;
     this.elems = null;
     this.values = [0,0,0,0]; //value, max, total, max this run
     this.exponent = decimal;

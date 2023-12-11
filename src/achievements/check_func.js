@@ -27,7 +27,7 @@ function check_cookie_clicker() {
 }
 
 function check_dont_you_have_something_better_to_do() {
-    return this.stats ? (Date.now() - this.stats.time_of_beginning) / 1000 >= 3600*4 : false;
+    return stats != null ? (((Date.now() - stats.time_of_beginning) / 1000) >= 3600*4) : false;
 }
 
 function check_positively_charged() {
@@ -44,4 +44,8 @@ function check_speedrun() {
 
 function check_the_burning_souls() {
     return stats.getAll("heat")[1] >= 666;
+}
+
+function check_modern_problems() {
+    return stats.get("energy") >= 100_000_000_000;
 }

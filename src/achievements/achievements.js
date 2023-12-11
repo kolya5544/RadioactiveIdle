@@ -80,8 +80,9 @@ Achievements.prototype = {
         this.addNewAchievement("The Burning Souls", "Sacrifice for a total of 666 Heat Points", check_the_burning_souls);
         this.addNewAchievement("Eight Bits of Heat", "Get more than 256 Heat Points in a single Sacrifice", null, "you get a very small bonus to your Energy and Heat output for every hour played");
         this.addNewAchievement("Chernobyl Disaster", "Start a reactor Meltdown", null);
+        this.addNewAchievement("Minor Inconvenience", "Get more than 50 Longer Explosions upgrades after getting Meltdown", check_minor_inconvenience, "a great life lesson");
         this.addNewAchievement("Radioactive: Now Idle!", "Sacrifice for at least 16 Heat Points without a single upgrade or click", null);
-        this.addNewAchievement("Modern Problems Require a Lot of Energy", "Get 100 billion Energy", check_modern_problems);
+        this.addNewAchievement("Modern Problems Require a Lot of Energy", "Get 100 billion Energy", check_modern_problems, "you get more Heat Points on Sacrifice the more time you spent since last Sacrifice (caps at 5 hours)");
         //this.addNewAchievement("Bomberman", "Reach 200 million Energy in no more than two reactor clicks", check_the_instigator, "start every new run with 200 Energy");
         //this.addNewAchievement("The One Achievement to Rule Them All", "", check_cookie_clicker);
 

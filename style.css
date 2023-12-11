@@ -160,6 +160,57 @@ h1 {
     border: 1px blue dotted;
 }
 
+.heatPointsColorText {
+    color: #9a2490;
+}
+
+.energyColorText {
+    color: #00547b;
+}
+
+.matterPointsColorText {
+    color: #a00000;
+}
+
+#heat {
+    font-style: italic;
+}
+
+#energyDisplay {
+    font-style: italic;
+}
+
+#matter {
+    font-style: italic;
+}
+
+#heatCount {
+    font-size: x-large;
+    text-align: center;
+}
+
+#matterCount {
+    font-size: larger;
+    text-align: center;
+}
+
+#energyCount {
+    font-size: xx-large;
+    text-align: center;
+}
+
+.matterPrestige {
+    border: 2px dotted;
+    background-color: #ffd2d2;
+    padding: 7px;
+}
+
+.heatPrestige {
+    border: 1px solid;
+    background-color: #f2d0ff;
+    padding: 7px;
+}
+
 /*REACTOR*/
 
 #canvas {

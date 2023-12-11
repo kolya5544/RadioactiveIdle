@@ -1,7 +1,7 @@
 function calc_prestige() {
     //return Math.floor(Math.max(Math.log10(Math.max((stats.get("energy") - 10000) / 68500, 0)), 0)); //Math.floor(stats.get("energy")/100)/100;
     let en = stats.getAll("energy")[3];
-    let correction = calc_heat_up() * calc_more_hp_reward();
+    let correction = calc_heat_up() * calc_more_hp_reward() * calc_modern_problems_reward();
     if (en < (6.95 * Math.pow(10, 5) / correction)) return 0;
     let a = logBase((en + 10_000_000) / 7_130_000, 1.5);
     if (en >= 1.1813 * Math.pow(10, 8)) a = logBase((en - 100_000_000)/7_130_000, 1.14);
@@ -63,8 +63,26 @@ function calc_more_hp_reward() {
     return achievements.get("Speedrun") ? 2 : 1;
 }
 
+function calc_modern_problems_reward() {
+    if (!achievements.get("Modern Problems Require a Lot of Energy")) return 1;
+    let tm = Math.max(Math.min(calc_get_minutes_since_sacrifice(), 300), 0);
+    let v = 1;
+
+    if (tm <= 120) {
+        v = Math.pow(1.009, tm);
+    } else {
+        v = (tm / 120) + 1.93;
+    }
+
+    return v;
+}
+
 function calc_get_hours_of_playtime() {
     return Math.floor((parseInt(Date.now()) - this.stats.time_of_beginning)/1000) / 3600;
+}
+
+function calc_get_minutes_since_sacrifice() {
+    return Math.floor((parseInt(Date.now()) - this.stats.time_of_last_prestige)/1000) / 60;
 }
 
 function calc_no_longer_needed_reward() {
@@ -82,4 +100,8 @@ function calc_enrichment(current_enr = null) {
 
 function calc_energy_output(group = 0) {
     return group*(1+calc_actual_multiplier()+calc_enrichment()+calc_eight_bits_of_heat_reward()*2);
+}
+
+function calc_matter_output() {
+    return logBase((stats.get("heat") - 794.702), 1.9)-12;
 }

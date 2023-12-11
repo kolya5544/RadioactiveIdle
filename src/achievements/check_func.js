@@ -49,3 +49,7 @@ function check_the_burning_souls() {
 function check_modern_problems() {
     return stats.get("energy") >= 100_000_000_000;
 }
+
+function check_minor_inconvenience() {
+    return upgrades.get("meltdown") > 0 && upgrades.get("time") > 50;
+}

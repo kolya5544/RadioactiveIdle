@@ -41,9 +41,11 @@ function update_progress_value() {
         //if (perc >= 1) allowMeltdown();
     } else if (stage == 3) {
         if (stats.get("heat") <= 5000) {
-            perc = Math.log(stats.get("heat") / 1000, 10) * (Math.log(10) / Math.log(5));
+            perc = logBase(stats.get("heat") / 1000, 10) * (Math.log(10) / Math.log(5));
         } else {
-            perc = Math.log((stats.getAll("heat")[0] - 794.702), 1.9)-12;
+            let v = calc_matter_output();
+            let nextV = v - Math.floor(v);
+            perc = nextV;
         }
     }
 
@@ -75,4 +77,8 @@ function isSacrificeUnlocked() {
 
 function doesHaveMeltdownBought() {
     return upgrades.get("meltdown") > 0;
+}
+
+function checkCanMatter() {
+    return upgrades.get("meltdown") > 0 && Math.floor(calc_matter_output()) > 0;
 }

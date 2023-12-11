@@ -174,3 +174,7 @@ function prestige(){
     reactor.reset();
     save();
 };
+
+function destroyReactor() {
+    // TODO
+}

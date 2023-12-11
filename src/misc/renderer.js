@@ -151,20 +151,37 @@ function renderPrestige() {
         prestigeCont.style.visibility = "hidden";
     }
 
-    // <p id="heatCount" class="lowMargin"></p>
     let iP = document.createElement("p");
+    iP.id = "matterCount";
+    iP.className = "lowMargin matterPointsColorText";
+    iP.innerHTML = "You have <span id=\"matter\">0</span> Matter Units";
+    if (stats.getAll("matter")[2] < 1) iP.style.display = "none";
+
+    prestigeCont.prepend(iP);
+
+    // <p id="heatCount" class="lowMargin"></p>
+    iP = document.createElement("p");
     iP.id = "heatCount";
-    iP.className = "lowMargin";
+    iP.className = "lowMargin heatPointsColorText";
     iP.innerHTML = "You have <span id=\"heat\">0</span> Heat Points";
     if (stats.getAll("heat")[2] < 1) iP.style.display = "none";
 
     prestigeCont.prepend(iP);
+
+    iP = document.createElement("p");
+    iP.id = "energyCount";
+    iP.className = "lowMargin energyColorText";
+    iP.innerHTML = "You have <span id=\"energyDisplay\">0</span> Energy";
+    if (stats.getAll("energy")[2] < 1) iP.style.display = "none";
+
+    prestigeCont.prepend(iP);
+
     //prestigeCont.appendChild(iP);
     
 
     // <p class="lowMargin"><span id="prestige" class="button active">Sacrifice</span> all upgrades and reset board size to gain <span id="heatup">0</span> Heat Points.</p>
     iP = document.createElement("p");
-    iP.className = "medium_margin_top";
+    iP.className = "medium_margin_top heatPrestige";
     //iP.className = "no_upper_margin";
 
     let iSpan = document.createElement("span");
@@ -184,10 +201,43 @@ function renderPrestige() {
 
     prestigeCont.appendChild(iP);
 
+    // <p class="medium_margin_top"><span id="prestige" class="button active">Destroy the reactor</span> to reset Heat Points, Heat Upgrades, normal upgrades and reactor size to get <span id="heatup">1</span> Matter Unit(s).</p>
+
+    iP = document.createElement("p");
+    iP.id = "matterPrestigeElm";
+    iP.className = "medium_margin_top matterPrestige";
+    
+    iSpan = document.createElement("span");
+    iSpan.id = "destroyReactor";
+    iSpan.className = "button active";
+    iSpan.innerText = "Destroy the reactor";
+
+    iP.appendChild(iSpan);
+    iP.appendChild(document.createTextNode(" to reset Heat Points, Heat Upgrades, normal upgrades and reactor size to get "));
+    
+    iSpan = document.createElement("span");
+    iSpan.id = "matterup";
+    iSpan.innerText = "0";
+    iSpan.className = "matterAmount";
+
+    iP.appendChild(iSpan);
+    iP.appendChild(document.createTextNode(" Matter Unit(s)."));
+
+    if (!checkCanMatter()) iP.style.display = "none";
+
+    prestigeCont.appendChild(iP);
+
     // update upgrades
     upgrades.newBonusElem = document.getElementById("heatup");
     upgrades.heatCount = document.getElementById("heat");
     document.getElementById("prestige").addEventListener("click", prestige);
+
+    // update Matter Unit
+    upgrades.newMatterElem = document.getElementById("matterup");
+    upgrades.matterCount = document.getElementById("matter");
+    document.getElementById("destroyReactor").addEventListener("click", destroyReactor); // TODO
+
+    upgrades.energyCount = document.getElementById("energyDisplay");
 }
 
 function showPrestige() {

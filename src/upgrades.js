@@ -185,6 +185,9 @@ function Upgrades(){
     this.upgrades = {};
     this.newBonusElem = undefined;
     this.heatCount = undefined;
+    this.newMatterElem = undefined;
+    this.matterCount = undefined;
+    this.energyCount = undefined;
 };
 
 Upgrades.prototype = {
@@ -249,5 +252,10 @@ Upgrades.prototype = {
         }
         if (this.newBonusElem != undefined) this.newBonusElem.innerHTML = ""+stringify(calc_prestige());
         if (this.heatCount != undefined) this.heatCount.innerHTML = ""+stringify(stats.get("heat"));
+
+        if (this.newMatterElem != undefined) this.newMatterElem.innerHTML = ""+stringify(Math.floor(calc_matter_output()));
+        if (this.matterCount != undefined) this.matterCount.innerHTML = ""+stringify(stats.get("matter"));
+
+        if (this.energyCount != undefined) this.energyCount.innerHTML = ""+stringify(stats.get("energy"));
     }
 }

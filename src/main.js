@@ -22,6 +22,7 @@ function init(){
     reactor = new Reactor();
 
     initHeatUpgrades();
+    initMatterUpgrades();
     
     screens = new Screens();
 
@@ -41,6 +42,11 @@ function init(){
 
     if (playtime == null) {
         playtime = document.getElementById("playtimeTotal");
+    }
+
+    // draw matter stuff
+    if (stats.getAll("matter")[1] > 0) {
+        document.getElementById("matterContainer").style.visibility = "";       
     }
 
     start();
@@ -68,7 +74,7 @@ function update(draw_graphics = true){
 function processMeltdown() {
     let current = stats.getAll("chain")[3];
     let perSecond = calc_energy_output(current)*100;
-    let perTick = perSecond / 60;
+    let perTick = perSecond / 60 * calc_tickrate();
 
     stats.add("energy", perTick);
 
@@ -122,6 +128,9 @@ function reset(){
         upgrades.reset(true);
         reactor.reset();
         achievements.reset(true);
+        document.getElementById("heatCount").style.display = "none";
+        let prestigeCont = document.getElementById("prestigeContainer");
+        prestigeCont.style.visibility = "hidden";
         localStorage.clear();
         save();
     }
@@ -132,9 +141,9 @@ function exportGame() {
 }
 
 function importGame(game) {
-    var data = JSON.parse(game);
+    var data = JSON.parse(game.replaceAll("'", "\\\""));
     Object.keys(data).forEach(function (k) {
-        localStorage.setItem(k, JSON.stringify(data[k]));
+        localStorage.setItem(k, data[k]);
     });
     save = null;
 }
@@ -142,6 +151,7 @@ function importGame(game) {
 function prestige(){
     var prev = stats.get("heat");
     var prevSac = stats.get("sacrifices");
+    var prevMatter = stats.get("matter");
     var bonus = calc_prestige();
 
     if (bonus > 0) {
@@ -167,14 +177,63 @@ function prestige(){
     upgrades.reset();
     stats.set("sacrifices", prevSac);
     if (bonus > 0) stats.add("sacrifices", 1);
-    stats.set("heat", prev)
+    stats.set("heat", prev);
     stats.add("heat", bonus);
+    stats.set("matter", prevMatter);
     if (achievements.get("The Instigator")) stats.add("energy", 200);
     stats.time_of_last_prestige = parseInt(Date.now());
     reactor.reset();
     save();
+
+    var m_p_e = document.getElementById("matterPrestigeElm");
+    if (checkCanMatter()) {
+        m_p_e.style.display = "";
+    } else {
+        m_p_e.style.display = "none";
+    }
 };
 
 function destroyReactor() {
     // TODO
+
+    var prev = stats.get("matter");
+    var prevSac = stats.get("destroys");
+    var bonus = calc_matter_output();
+
+    if (bonus > 0) {
+        document.getElementById("matterCount").style.display = "";
+    }
+
+    if (calc_this_reaction_lifetime() <= 600) {
+        achievements.setCompletion("It's A Never Ending Cycle", true, true);
+    }
+
+    if (calc_this_reaction_lifetime() <= 60) {
+        achievements.setCompletion("Nobody Will Believe You", true, true);
+    }
+
+    // "in the end it does even matter" achievement unlock
+    achievements.setCompletion("In The End, It Doesn't Even Matter", true, true);
+
+    document.getElementById("heatCount").style.display = "none";
+
+    stats.reset(false, true);
+    upgrades.reset(false, true);
+    stats.set("destroys", prevSac);
+    if (bonus > 0) stats.add("destroys", 1);
+    stats.set("matter", prev);
+    stats.add("matter", bonus);
+    stats.time_of_last_reactor = parseInt(Date.now());
+
+    // obviously
+    prestige();
+
+    if (!isSacrificeUnlocked()) {
+        let prestigeCont = document.getElementById("prestigeContainer");
+        prestigeCont.style.visibility = "hidden";
+    }
+
+    if (stats.getAll("matter")[1] > 0) {
+        document.getElementById("matterContainer").style.visibility = "";       
+    }
 }

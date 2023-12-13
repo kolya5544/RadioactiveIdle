@@ -82,6 +82,12 @@ function renderHeatUpgrade(upgrade) {
     return renderUpgrade(upgrade.res, upgrade.displayName, heatCont, "heatUpgradeContainer", upgrade.description, upgrade);
 }
 
+function renderMatterUpgrade(upgrade) {
+    let matterCont = document.getElementById("matterContainer");
+    if (stats.getAll("matter")[1] <= 0) matterCont.style.visibility = "hidden";
+    return renderUpgrade(upgrade.res, upgrade.displayName, matterCont, "matterUpgradeContainer", upgrade.description, upgrade);
+}
+
 function renderStats() {
     let statsCont = document.getElementById("statsContainer");
 
@@ -154,7 +160,7 @@ function renderPrestige() {
     let iP = document.createElement("p");
     iP.id = "matterCount";
     iP.className = "lowMargin matterPointsColorText";
-    iP.innerHTML = "You have <span id=\"matter\">0</span> Matter Units";
+    iP.innerHTML = "You have <span id=\"matterZ\">0</span> Matter Units";
     if (stats.getAll("matter")[2] < 1) iP.style.display = "none";
 
     prestigeCont.prepend(iP);
@@ -163,7 +169,7 @@ function renderPrestige() {
     iP = document.createElement("p");
     iP.id = "heatCount";
     iP.className = "lowMargin heatPointsColorText";
-    iP.innerHTML = "You have <span id=\"heat\">0</span> Heat Points";
+    iP.innerHTML = "You have <span id=\"heatZ\">0</span> Heat Points";
     if (stats.getAll("heat")[2] < 1) iP.style.display = "none";
 
     prestigeCont.prepend(iP);
@@ -229,13 +235,13 @@ function renderPrestige() {
 
     // update upgrades
     upgrades.newBonusElem = document.getElementById("heatup");
-    upgrades.heatCount = document.getElementById("heat");
+    upgrades.heatCount = document.getElementById("heatZ");
     document.getElementById("prestige").addEventListener("click", prestige);
 
     // update Matter Unit
     upgrades.newMatterElem = document.getElementById("matterup");
-    upgrades.matterCount = document.getElementById("matter");
-    document.getElementById("destroyReactor").addEventListener("click", destroyReactor); // TODO
+    upgrades.matterCount = document.getElementById("matterZ");
+    document.getElementById("destroyReactor").addEventListener("click", destroyReactor);
 
     upgrades.energyCount = document.getElementById("energyDisplay");
 }

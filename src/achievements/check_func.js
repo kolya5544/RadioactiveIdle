@@ -53,3 +53,10 @@ function check_modern_problems() {
 function check_minor_inconvenience() {
     return upgrades.get("meltdown") > 0 && upgrades.get("time") > 50;
 }
+
+function check_one_achievement_to_rule_them_all() {
+    let cnt = 0;
+    let vLen = Object.keys(achievements.achievements);
+    vLen.forEach((z) => cnt += achievements.get(z) ? 1 : 0);
+    return cnt == vLen.length - 1;
+}

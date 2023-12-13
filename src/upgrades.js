@@ -12,6 +12,14 @@ function initHeatUpgrades() {
     upgrades.addUpgrade("meltdown", 0, "Meltdown", "heat", "Passively generate x100 this run's best chain reaction output every second. Starts an uncontrollable chain reaction, consuming everything on its way.", 1000, meltdown_allow_once, meltdown_buy_max).cost(1000, 1).button([1, 0]);
 }
 
+function initMatterUpgrades() {
+    upgrades.addUpgrade("tickspeed", 0, "Particle Accelerator", "matter", "All processes in the game happen at a faster rate").cost(2, 2).button([1, 0]);
+    upgrades.addUpgrade("heat_matter_multiplier", 0, "Nuclear Explosion", "matter", "Double Heat Point gain on Sacrifice").cost(2, 2).button([1, 0]);
+    upgrades.addUpgrade("stronger_walls", 0, "Stronger Walls", "matter", "Reactor size increase starts significantly later").cost(1, 2).button([1, 0]);
+    upgrades.addUpgrade("faster_explosions", 0, "External Intake", "matter", "Explosions last for *less* time", 0, faster_explosions_allow_once, faster_explosions_buy_max).cost(20, 2).button([1, 0]);
+    upgrades.addUpgrade("controllable_meltdown", 0, "Rapid Decay", "matter", "Start every game with 10 Heat Points and Sacrifice unlocked", 0, controllable_meltdown_allow_once, controllable_meltdown_buy_max).cost(50, 2).button([1, 0]);
+}
+
 function meltdown_allow_once(factor, base, current, number) {
     if (doesHaveMeltdownBought()) return -1;
     return 1000;
@@ -20,6 +28,26 @@ function meltdown_allow_once(factor, base, current, number) {
 function meltdown_buy_max(factor, base, money, current) {
     if (doesHaveMeltdownBought()) return 0;
     return (money >= 1000) ? 1 : 0;
+}
+
+function controllable_meltdown_allow_once(factor, base, current, number) {
+    if (doesHaveRapidDecayBought()) return -1;
+    return 50;
+}
+
+function controllable_meltdown_buy_max(factor, base, money, current) {
+    if (doesHaveRapidDecayBought()) return 0;
+    return (money >= 50) ? 1 : 0;
+}
+
+function faster_explosions_allow_once(factor, base, current, number) {
+    if (upgrades.get("faster_explosions") > 0) return -1;
+    return 20;
+}
+
+function faster_explosions_buy_max(factor, base, money, current) {
+    if (upgrades.get("faster_explosions") > 0) return 0;
+    return (money >= 20) ? 1 : 0;
 }
 
 function Upgrade(res, elem, decimal, displayName, currency="energy", description = null, currency_requirement = null, costGrowthFunction = calc_upgrade_cost_growth, maxBuyFunction = calc_upgrade_cost_max){
@@ -99,9 +127,22 @@ Upgrade.prototype = {
                 achievements.setCompletion("Chernobyl Disaster", true, true);
             }
 
+            if (this.res == "tickspeed") { // "Faster Than Light" achievement check
+                achievements.setCompletion("Faster Than Light", true, true);
+            }
+
             stats.add(this.currency, -cost);
             this.add(amount);
         }
+
+        if (upgrades.get("tickspeed") > 0 && upgrades.get("heat_matter_multiplier") > 0 && upgrades.get("stronger_walls") > 0 && upgrades.get("faster_explosions") > 0) { // "Buffed Up" achievement check
+            achievements.setCompletion("Buffed Up", true, true);
+        }
+
+        if (upgrades.get("time") > 0 && upgrades.get("faster_explosions") > 0) { // "Actual Insanity" achievement check
+            achievements.setCompletion("Actual Insanity", true, true);
+        }
+
         this.updateSubtext();
     },
     
@@ -171,6 +212,26 @@ Upgrade.prototype = {
                 prev = calc_enrichment(this.value);
                 next = calc_enrichment(this.value + 1);
                 break;
+            case "tickspeed":
+                prev = calc_tickrate(this.value) * 60;
+                next = calc_tickrate(this.value + 1) * 60;
+                suffix = " ticks/second";
+                break;
+            case "heat_matter_multiplier":
+                prev = calc_nuclear_explosion(this.value);
+                next = calc_nuclear_explosion(this.value + 1);
+                prefix = "x";
+                break;
+            case "stronger_walls":
+                prev = calc_strong_walls(this.value);
+                next = calc_strong_walls(this.value + 1);
+                break;
+            case "faster_explosions":
+                prev = calc_faster_explosions(this.value) / 60;
+                next = calc_faster_explosions(this.value + 1) / 60;
+                prefix = "-";
+                suffix = "s";
+                break;
         }
 
         if (prev == -1 || next == -1) { subtextEl.style.display = "none"; return; }
@@ -206,9 +267,10 @@ Upgrades.prototype = {
         localStorage.setItem("res", JSON.stringify(toSave));
     },
     
-    reset: function(hard_reset = false){
+    reset: function(hard_reset = false, matter_reset = false){
         for(var res in this.upgrades){
-            if (this.upgrades[res].currency == "heat" && !hard_reset) continue;
+            if (this.upgrades[res].currency == "heat" && (!hard_reset && !matter_reset)) continue;
+            if (this.upgrades[res].currency == "matter" && !hard_reset) continue;
             this.set(res, 0);
         }
     },
@@ -219,6 +281,7 @@ Upgrades.prototype = {
         // render new upgrade
         if (currency == "energy") this.upgrades[res].tableElem = renderUpgrade(res, displayName);
         if (currency == "heat") this.upgrades[res].tableElem = renderHeatUpgrade(this.upgrades[res]);
+        if (currency == "matter") this.upgrades[res].tableElem = renderMatterUpgrade(this.upgrades[res]);
         elem = document.getElementById(res);
 
         this.upgrades[res].updateSubtext();

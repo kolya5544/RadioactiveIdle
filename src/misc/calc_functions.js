@@ -5,7 +5,7 @@ function calc_prestige() {
     if (en < (6.95 * Math.pow(10, 5) / correction)) return 0;
     let a = logBase((en + 10_000_000) / 7_130_000, 1.5);
     if (en >= 1.1813 * Math.pow(10, 8)) a = logBase((en - 100_000_000)/7_130_000, 1.14);
-    return Math.floor(Math.max(a, 0) * correction + calc_eight_bits_of_heat_reward());
+    return Math.floor(Math.max(a, 0) * correction + calc_eight_bits_of_heat_reward()) * calc_nuclear_explosion();
 }
 
 function calc_heat_up(current_h = null) {
@@ -14,17 +14,17 @@ function calc_heat_up(current_h = null) {
 }
 
 function calc_board_size() {
-    return Math.max((stats.get("explosions")-stats.get("clicks")+200+calc_reactor_delay_reward()) * 0.85, 173);
+    return Math.max((stats.get("explosions")-stats.get("clicks")+200+calc_reactor_delay_reward()-calc_strong_walls()) * 0.85, 173);
 }
 
 function calc_actual_speed(current_speed = null) {
     if (current_speed == null) current_speed = upgrades.get("speed");
-    return ((current_speed+5)/15);
+    return ((current_speed+5)/15) * calc_tickrate();
 }
 
 function calc_actual_explosion_time(current_expl = null) {
     if (current_expl == null) current_expl = upgrades.get("time");
-    return (current_expl+5)*12;
+    return ((current_expl+5)*12 - calc_faster_explosions()) / calc_tickrate();
 }
 
 function calc_actual_explosion_size(current_size = null) {
@@ -103,5 +103,34 @@ function calc_energy_output(group = 0) {
 }
 
 function calc_matter_output() {
-    return logBase((stats.get("heat") - 794.702), 1.9)-12;
+    return logBase((stats.getAll("heat")[4] - 794.702), 1.9)-12;
+}
+
+function calc_tickrate(current_tick = null) {
+    if (current_tick == null && !upgrades.upgrades["tickspeed"]) return 1;
+    if (current_tick == null) current_tick = upgrades.get("tickspeed");
+    if (current_tick <= 3) return Math.pow(1.5, current_tick);
+    return 0.5*(current_tick + 1) + 2;
+}
+
+function calc_nuclear_explosion(current_nucl = null) {
+    if (current_nucl == null && !upgrades.upgrades["heat_matter_multiplier"]) return 1;
+    if (current_nucl == null) current_nucl = upgrades.get("heat_matter_multiplier");
+    return Math.pow(2, current_nucl);
+}
+
+function calc_strong_walls(current_wall = null) {
+    if (current_wall == null && !upgrades.upgrades["stronger_walls"]) return 0;
+    if (current_wall == null) current_wall = upgrades.get("stronger_walls");
+    return current_wall*200;
+}
+
+function calc_faster_explosions(current_expl = null) {
+    if (current_expl == null && !upgrades.upgrades["faster_explosions"]) return 0;
+    if (current_expl == null) current_expl = upgrades.get("faster_explosions");
+    return current_expl * 30;
+}
+
+function calc_this_reaction_lifetime() {
+    return (parseInt(Date.now()) - stats.time_of_last_reactor)/1000;
 }

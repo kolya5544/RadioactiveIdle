@@ -6,6 +6,7 @@ function addStats(){
     stats.addStat("heat", 2);
     stats.addStat("sacrifices", 0);
     stats.addStat("matter", 0);
+    stats.addStat("destroys", 0);
 
     renderStats();
 };
@@ -13,7 +14,7 @@ function addStats(){
 function Stat(name, decimal){
     this.name = name;
     this.elems = null;
-    this.values = [0,0,0,0]; //value, max, total, max this run
+    this.values = [0,0,0,0,0]; //value, max, total, max this run, max this reactor
     this.exponent = decimal;
     this.decimal = Math.pow(10, decimal);
 };
@@ -27,6 +28,9 @@ Stat.prototype = {
         }
         if (this.values[0] > this.values[3]){
             this.values[3] = this.values[0];
+        }
+        if (this.values[0] > this.values[4]){
+            this.values[4] = this.values[0];
         }
     },
     
@@ -48,6 +52,9 @@ Stat.prototype = {
         if (this.values[0] > this.values[3]) {
             this.values[3] = this.values[0];
         }
+        if (this.values[0] > this.values[4]){
+            this.values[4] = this.values[0];
+        }
     },
     
     get: function(i){
@@ -55,7 +62,7 @@ Stat.prototype = {
     },
     
     getAll: function(i){
-        return [this.get(0), this.get(1), this.get(2), this.get(3)];
+        return [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4)];
     },
     
     draw: function(){
@@ -78,6 +85,7 @@ function Stats(){
     this.time_of_beginning = 0;
     this.time_of_save = 0;
     this.time_of_last_prestige = 0;
+    this.time_of_last_reactor = 0;
 };
 
 Stats.prototype = {
@@ -87,13 +95,16 @@ Stats.prototype = {
             this.setAll(stat, saved[stat]);
         }
         let tob = localStorage.getItem("time_of_beginning");
-        this.time_of_beginning = tob == null ? 0 : parseInt(tob);
+        this.time_of_beginning = tob == null ? parseInt(Date.now()) : parseInt(tob);
 
         let tos = localStorage.getItem("time_of_save");
         this.time_of_save = tos == null ? 0 : parseInt(tos);
 
         let top = localStorage.getItem("time_of_last_prestige");
-        this.time_of_last_prestige = top == null ? 0 : parseInt(top);
+        this.time_of_last_prestige = top == null ? parseInt(Date.now()) : parseInt(top);
+
+        let tor = localStorage.getItem("time_of_last_reactor");
+        this.time_of_last_reactor = tor == null ? parseInt(Date.now()) : parseInt(tor);
     },
     
     save: function(){
@@ -105,17 +116,27 @@ Stats.prototype = {
         localStorage.setItem("time_of_beginning", this.time_of_beginning);
         localStorage.setItem("time_of_save", parseInt(Date.now()));
         localStorage.setItem("time_of_last_prestige", this.time_of_last_prestige);
+        localStorage.setItem("time_of_last_reactor", this.time_of_last_reactor);
     },
     
-    reset: function(hardReset){
+    reset: function(hardReset = false, matterReset = false){
         if(hardReset){
             for(var stat in this.stats){
-                this.setAll(stat, [0, 0, 0, 0]);
+                this.setAll(stat, [0, 0, 0, 0, 0]);
             }
+            this.time_of_beginning = parseInt(Date.now());
         }else{
             for(var stat in this.stats){
                 this.set(stat, 0)
                 this.newRun(stat);
+                if (matterReset) {
+                    if (stat == "matter") {
+                        let v = this.getAll("matter");
+                        this.setAll(stat, [0, v[1], v[2], v[3], v[4]]);
+                        continue;
+                    }
+                    this.setAll(stat, [0, 0, 0, 0, 0]);
+                }
             }
         }
     },
@@ -134,6 +155,10 @@ Stats.prototype = {
 
     newRun: function(stat) {
         this.stats[stat].newRun();
+    },
+
+    newReactor: function(stat) {
+        // todo this.stats[stat].newReactor();
     },
     
     add: function(stat, value){

@@ -41,7 +41,7 @@ function update_progress_value() {
         //if (perc >= 1) allowMeltdown();
     } else if (stage == 3) {
         if (stats.get("heat") <= 5000) {
-            perc = logBase(stats.get("heat") / 1000, 10) * (Math.log(10) / Math.log(5));
+            perc = logBase(stats.getAll("heat")[4] / 1000, 10) * (Math.log(10) / Math.log(5));
         } else {
             let v = calc_matter_output();
             let nextV = v - Math.floor(v);
@@ -81,4 +81,8 @@ function doesHaveMeltdownBought() {
 
 function checkCanMatter() {
     return upgrades.get("meltdown") > 0 && Math.floor(calc_matter_output()) > 0;
+}
+
+function doesHaveRapidDecayBought() {
+    return upgrades.get("controllable_meltdown") > 0;
 }

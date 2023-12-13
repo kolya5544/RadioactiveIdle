@@ -51,6 +51,9 @@ Achievement.prototype = {
             if (this.completed) {
                 let iSpan = el.querySelector("span");
                 iSpan.style.display = "";
+            } else {
+                let iSpan = el.querySelector("span");
+                iSpan.style.display = "none";
             }
         }
     },
@@ -83,8 +86,14 @@ Achievements.prototype = {
         this.addNewAchievement("Minor Inconvenience", "Get more than 50 Longer Explosions upgrades after getting Meltdown", check_minor_inconvenience, "a great life lesson");
         this.addNewAchievement("Radioactive: Now Idle!", "Sacrifice for at least 16 Heat Points without a single upgrade or click", null);
         this.addNewAchievement("Modern Problems Require a Lot of Energy", "Get 100 billion Energy", check_modern_problems, "you get more Heat Points on Sacrifice the more time you spent since last Sacrifice (caps at 5 hours)");
+        this.addNewAchievement("In The End, It Doesn't Even Matter", "Destroy your first reactor and get your first Matter Unit");
+        this.addNewAchievement("Faster Than Light", "Upgrade your tickrate using Matter Units");
+        this.addNewAchievement("Buffed Up", "Get one of every Matter Unit upgrade (except for Rapid Decay)");
+        this.addNewAchievement("Actual Insanity", "Upgrade both External Intake and Longer Explosions");
+        this.addNewAchievement("It's A Never Ending Cycle", "Destroy the reactor in less than 10 minutes since last time you destroyed the reactor");
+        this.addNewAchievement("Nobody Will Believe You", "Destroy the reactor in less than one minute");
         //this.addNewAchievement("Bomberman", "Reach 200 million Energy in no more than two reactor clicks", check_the_instigator, "start every new run with 200 Energy");
-        //this.addNewAchievement("The One Achievement to Rule Them All", "", check_cookie_clicker);
+        this.addNewAchievement("The One Achievement to Rule Them All", "Complete every single achievement in the game (congratz!)", check_one_achievement_to_rule_them_all);
 
         this.draw();
     },

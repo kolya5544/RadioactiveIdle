@@ -72,7 +72,7 @@ Reactor.prototype = {
             this.ctx.globalAlpha = 0.5;
             this.ctx.fillText("Meltdown in process!", this.canvas.width/2 - this.canvas.width/4, this.canvas.height/2);
             this.ctx.font = "24px Courier New";
-            this.ctx.fillText(`You generate ~${stringify(calc_energy_output(stats.getAll("chain")[3])*100)} Energy per second`, this.canvas.width/2 - this.canvas.width/4.2, this.canvas.height/2+this.canvas.height/30);
+            this.ctx.fillText(`You generate ~${stringify(calc_energy_output(stats.getAll("chain")[3])*100*calc_tickrate())} Energy per second`, this.canvas.width/2 - this.canvas.width/4.2, this.canvas.height/2+this.canvas.height/30);
             this.ctx.globalAlpha = 1.0;
             this.ctx.font = '10px sans-serif';
             this.ctx.fillStyle = "black";

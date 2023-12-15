@@ -181,6 +181,7 @@ function prestige(){
     stats.add("heat", bonus);
     stats.set("matter", prevMatter);
     if (achievements.get("The Instigator")) stats.add("energy", 200);
+    if (achievements.get("Actual Insanity")) stats.add("energy", 2000);
     stats.time_of_last_prestige = parseInt(Date.now());
     reactor.reset();
     save();
@@ -235,5 +236,10 @@ function destroyReactor() {
 
     if (stats.getAll("matter")[1] > 0) {
         document.getElementById("matterContainer").style.visibility = "";       
+    }
+
+    if (upgrades.get("controllable_meltdown") > 0) {
+        // woo!
+        stats.add("heat", 10);
     }
 }

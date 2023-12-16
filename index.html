@@ -20,10 +20,12 @@
         <script type="text/javascript" src="src/achievements/achievements.js"></script>
         <script type="text/javascript" src="src/achievements/check_func.js"></script>
         <script type="text/javascript" src="src/misc/progress_tracker.js"></script>
+        <script type="text/javascript" src="src/backgroundHandler.js"></script>
         <script type="text/javascript" src="src/main.js"></script>
         <script type="text/javascript" src="src/tick.js"></script>
     </head>
     <body onload="init();" onunload="save();">
+        <div class="overlay" id="overlay"></div>
         <div id="meta">
             <span id="save" class='button active'>Save</span>
             <span id="reset" class='button active'>Reset</span>

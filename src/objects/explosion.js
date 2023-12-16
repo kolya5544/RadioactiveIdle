@@ -16,7 +16,7 @@ Explosion.prototype = {
         this.dr /= 1.1;
         this.timeLeft -= 1;
         if(this.timeLeft <= 0){
-            this.inner += (this.radius+5*this.inner)/50;
+            this.inner += (this.radius+5*this.inner)/50 * calc_tickrate();
             if(this.inner >= this.radius){
                 reactor.explodes.remove(this);
             }

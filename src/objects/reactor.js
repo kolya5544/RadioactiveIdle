@@ -90,7 +90,13 @@ Reactor.prototype = {
     
     spawnDelay: function(){
         var count = upgrades.get("balls")+10-this.balls.count-this.explodes.count+calc_additional_balls_reward();
-        return 10*(1+this.explodes.count)/count/calc_tickrate();
+
+        if (firstLaunch) count = 1-this.balls.count-this.explodes.count;
+
+        let multiplier = 10;
+        if (calc_faster_explosions() != 0) multiplier = 5;
+
+        return multiplier*(1+this.explodes.count)/count/calc_tickrate();
     },
     
     reset: function(){

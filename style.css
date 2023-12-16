@@ -133,6 +133,25 @@ h1 {
     transition: all 0.7s ease-in-out;
 }
 
+.overlay{
+    position:absolute;
+    background:#fff;
+    opacity:0;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    z-index:1;
+    pointer-events: none;
+
+    transition: opacity 0.1s ease-in-out;
+}
+
+.overlayComplete {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
 .medium_margin_top {
     margin-top: 6px;
 }

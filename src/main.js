@@ -5,6 +5,8 @@ var playtime = null;
 
 var loadedSuccessfully = false;
 
+var firstLaunch = false;
+
 function init(){
     document.getElementById("save").addEventListener("click", save);
     document.getElementById("reset").addEventListener("click", reset);
@@ -67,6 +69,15 @@ function update(draw_graphics = true){
         processMeltdown();
     }
 
+    if (upgrades.get("heat_generator") > 0) {
+        // woo!
+        let bonus = calc_prestige();
+        let oneSixth = (bonus / 15);
+        let tickGain = oneSixth / 60 / 60 * calc_tickrate(); // / tickSpeed / minute
+
+        stats.add("heat", tickGain);
+    }
+
     trackProgress();
     //requestAnimFrame(update);
 };
@@ -106,8 +117,11 @@ function save(){
 
 function load(){
     var version = localStorage.getItem("ver");
-    if(typeof version === "null"){
+    if(typeof version === "object"){
         localStorage.clear();
+
+        // very first launch! wooo!
+        firstLaunch = true;
     }
     upgrades.load();
     stats.load();
@@ -149,6 +163,9 @@ function importGame(game) {
 }
 
 function prestige(){
+    if (!stats.sacrificedBefore) flash();
+    stats.sacrificedBefore = true;
+
     var prev = stats.get("heat");
     var prevSac = stats.get("sacrifices");
     var prevMatter = stats.get("matter");
@@ -195,7 +212,7 @@ function prestige(){
 };
 
 function destroyReactor() {
-    // TODO
+    flash();
 
     var prev = stats.get("matter");
     var prevSac = stats.get("destroys");
@@ -240,6 +257,6 @@ function destroyReactor() {
 
     if (upgrades.get("controllable_meltdown") > 0) {
         // woo!
-        stats.add("heat", 10);
+        stats.add("heat", 128);
     }
 }

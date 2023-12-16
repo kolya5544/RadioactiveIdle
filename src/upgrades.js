@@ -16,8 +16,9 @@ function initMatterUpgrades() {
     upgrades.addUpgrade("tickspeed", 0, "Particle Accelerator", "matter", "All processes in the game happen at a faster rate").cost(2, 2).button([1, 0]);
     upgrades.addUpgrade("heat_matter_multiplier", 0, "Nuclear Explosion", "matter", "Double Heat Point gain on Sacrifice").cost(2, 2).button([1, 0]);
     upgrades.addUpgrade("stronger_walls", 0, "Stronger Walls", "matter", "Reactor size increase starts significantly later").cost(1, 2).button([1, 0]);
-    upgrades.addUpgrade("faster_explosions", 0, "External Intake", "matter", "Explosions last for *less* time", 0, faster_explosions_allow_once, faster_explosions_buy_max).cost(20, 2).button([1, 0]);
-    upgrades.addUpgrade("controllable_meltdown", 0, "Rapid Decay", "matter", "Start every game with 10 Heat Points and Sacrifice unlocked", 0, controllable_meltdown_allow_once, controllable_meltdown_buy_max).cost(50, 2).button([1, 0]);
+    upgrades.addUpgrade("faster_explosions", 0, "External Intake", "matter", "Explosions last for *less* time", 0, faster_explosions_allow_once, faster_explosions_buy_max).cost(10, 2).button([1, 0]);
+    upgrades.addUpgrade("controllable_meltdown", 0, "Rapid Decay", "matter", "Start every game with 128 Heat Points and Sacrifice unlocked", 0, controllable_meltdown_allow_once, controllable_meltdown_buy_max).cost(25, 2).button([1, 0]);
+    upgrades.addUpgrade("heat_generator", 0, "Heat Control System", "matter", "Generate 1/15th of current Sacrifice reward per minute (affected by tickrate)", 0, hcs_allow_once, hcs_buy_max).cost(50, 2).button([1, 0]);
 }
 
 function meltdown_allow_once(factor, base, current, number) {
@@ -32,22 +33,32 @@ function meltdown_buy_max(factor, base, money, current) {
 
 function controllable_meltdown_allow_once(factor, base, current, number) {
     if (doesHaveRapidDecayBought()) return -1;
-    return 50;
+    return 25;
 }
 
 function controllable_meltdown_buy_max(factor, base, money, current) {
     if (doesHaveRapidDecayBought()) return 0;
-    return (money >= 50) ? 1 : 0;
+    return (money >= 25) ? 1 : 0;
 }
 
 function faster_explosions_allow_once(factor, base, current, number) {
     if (upgrades.get("faster_explosions") > 0) return -1;
-    return 20;
+    return 10;
 }
 
 function faster_explosions_buy_max(factor, base, money, current) {
     if (upgrades.get("faster_explosions") > 0) return 0;
     return (money >= 20) ? 1 : 0;
+}
+
+function hcs_buy_max(factor, base, money, current) {
+    if (upgrades.get("heat_generator") > 0) return 0;
+    return (money >= 50) ? 1 : 0;
+}
+
+function hcs_allow_once(factor, base, current, number) {
+    if (upgrades.get("heat_generator") > 0) return -1;
+    return 50;
 }
 
 function Upgrade(res, elem, decimal, displayName, currency="energy", description = null, currency_requirement = null, costGrowthFunction = calc_upgrade_cost_growth, maxBuyFunction = calc_upgrade_cost_max){
@@ -124,7 +135,10 @@ Upgrade.prototype = {
             }
 
             if (this.res == "meltdown") { // chernobyl disaster achievement check
+                if (!stats.gotMeltdownBefore) flash();
+
                 achievements.setCompletion("Chernobyl Disaster", true, true);
+                stats.gotMeltdownBefore = true;
             }
 
             if (this.res == "tickspeed") { // "Faster Than Light" achievement check
@@ -135,7 +149,7 @@ Upgrade.prototype = {
             this.add(amount);
         }
 
-        if (upgrades.get("tickspeed") > 0 && upgrades.get("heat_matter_multiplier") > 0 && upgrades.get("stronger_walls") > 0 && upgrades.get("faster_explosions") > 0) { // "Buffed Up" achievement check
+        if (upgrades.get("tickspeed") > 0 && upgrades.get("heat_matter_multiplier") > 0 && upgrades.get("stronger_walls") > 0 && upgrades.get("faster_explosions") > 0 && upgrades.get("controllable_meltdown") > 0 && upgrades.get("heat_generator") > 0) { // "Buffed Up" achievement check
             achievements.setCompletion("Buffed Up", true, true);
         }
 
@@ -153,6 +167,10 @@ Upgrade.prototype = {
             this.tableElem.children[2].style.visibility = "hidden";
             this.tableElem.children[3].style.visibility = "hidden";
             this.tableElem.children[4].style.visibility = "hidden";
+        } else {
+            this.tableElem.children[2].style.visibility = "";
+            this.tableElem.children[3].style.visibility = "";
+            this.tableElem.children[4].style.visibility = "";
         }
 
         valueElem.innerHTML = ""+stringify(this.get());

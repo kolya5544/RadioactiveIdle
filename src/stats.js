@@ -86,6 +86,8 @@ function Stats(){
     this.time_of_save = 0;
     this.time_of_last_prestige = 0;
     this.time_of_last_reactor = 0;
+    this.sacrificedBefore = false;
+    this.gotMeltdownBefore = false;
 };
 
 Stats.prototype = {
@@ -105,6 +107,12 @@ Stats.prototype = {
 
         let tor = localStorage.getItem("time_of_last_reactor");
         this.time_of_last_reactor = tor == null ? parseInt(Date.now()) : parseInt(tor);
+
+        let sacrificedBefore = localStorage.getItem("sacrificedBefore");
+        this.sacrificedBefore = sacrificedBefore == null ? 0 : sacrificedBefore == "true";
+
+        let gotMeltdownBefore = localStorage.getItem("gotMeltdownBefore");
+        this.gotMeltdownBefore = gotMeltdownBefore == null ? 0 : gotMeltdownBefore == "true";
     },
     
     save: function(){
@@ -117,6 +125,9 @@ Stats.prototype = {
         localStorage.setItem("time_of_save", parseInt(Date.now()));
         localStorage.setItem("time_of_last_prestige", this.time_of_last_prestige);
         localStorage.setItem("time_of_last_reactor", this.time_of_last_reactor);
+
+        localStorage.setItem("sacrificedBefore", this.sacrificedBefore);
+        localStorage.setItem("gotMeltdownBefore", this.gotMeltdownBefore);
     },
     
     reset: function(hardReset = false, matterReset = false){

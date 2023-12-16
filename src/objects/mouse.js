@@ -26,6 +26,11 @@ Mouse.prototype = {
         this.move(event);
         var ball = this.nearest();
         if(typeof ball !== "undefined"){
+            if (firstLaunch) {
+                firstLaunch = false;
+                flash();
+            }
+
             ball.explode();
             stats.add("clicks", 1);
         }

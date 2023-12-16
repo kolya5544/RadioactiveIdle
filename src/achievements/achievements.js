@@ -88,9 +88,9 @@ Achievements.prototype = {
         this.addNewAchievement("Modern Problems Require a Lot of Energy", "Get 100 billion Energy", check_modern_problems, "you get more Heat Points on Sacrifice the more time you spent since last Sacrifice (caps at 5 hours)");
         this.addNewAchievement("In The End, It Doesn't Even Matter", "Destroy your first reactor and get your first Matter Unit");
         this.addNewAchievement("Faster Than Light", "Upgrade your tickrate using Matter Units");
-        this.addNewAchievement("Buffed Up", "Get one of every Matter Unit upgrade (except for Rapid Decay)");
         this.addNewAchievement("Actual Insanity", "Upgrade both External Intake and Longer Explosions", null, "you start a run with 2000 Energy");
         this.addNewAchievement("It's A Never Ending Cycle", "Destroy the reactor in less than 10 minutes since last time you destroyed the reactor");
+        this.addNewAchievement("Buffed Up", "Get one of every Matter Unit upgrade");
         this.addNewAchievement("Nobody Will Believe You", "Destroy the reactor in less than one minute");
         this.addNewAchievement("The One Achievement to Rule Them All", "Complete every single achievement in the game (congratz!)", check_one_achievement_to_rule_them_all);
 

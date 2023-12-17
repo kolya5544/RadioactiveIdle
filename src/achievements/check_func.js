@@ -60,3 +60,15 @@ function check_one_achievement_to_rule_them_all() {
     vLen.forEach((z) => cnt += achievements.get(z) ? 1 : 0);
     return cnt == vLen.length - 1;
 }
+
+function check_extremely_funny() {
+    return stats.getAll("heat")[4] >= 69420;
+}
+
+function check_mvp() {
+    return calc_meltdown_output() > 1_000_000_000;
+}
+
+function check_heavy_duty() {
+    return stats.getAll("matter")[1] >= 24;
+}

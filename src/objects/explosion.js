@@ -24,6 +24,9 @@ Explosion.prototype = {
         for(var i in reactor.balls.objects){
             var ball = reactor.balls.objects[i];
             if(collided(this, ball)){
+                if (upgrades.get("meltdown") > 0) {
+                    ball.explode([stats.getAll("chain")[3]]); continue;
+                }
                 ball.explode(this.group);
             }
         }

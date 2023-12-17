@@ -21,5 +21,5 @@ function setNewBackground(id) {
 function flash() {
     let z = document.getElementById("overlay");
     z.className = "overlay overlayComplete";
-    setTimeout(() => { document.getElementById("overlay").className = "overlay"; }, 2000);
+    setTimeout(() => { document.getElementById("overlay").className = "overlay"; }, 1500);
 }

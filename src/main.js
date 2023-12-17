@@ -73,7 +73,7 @@ function update(draw_graphics = true){
         // woo!
         let bonus = calc_prestige();
         let oneSixth = (bonus / 15);
-        let tickGain = oneSixth / 60 / 60 * calc_tickrate(); // / tickSpeed / minute
+        let tickGain = Math.round(oneSixth / 60 / 60 * calc_tickrate() * 100) / 100; // / tickSpeed / minute
 
         stats.add("heat", tickGain);
     }
@@ -84,8 +84,8 @@ function update(draw_graphics = true){
 
 function processMeltdown() {
     let current = stats.getAll("chain")[3];
-    let perSecond = calc_energy_output(current)*100;
-    let perTick = perSecond / 60 * calc_tickrate();
+    let perSecond = calc_meltdown_output(); 
+    let perTick = perSecond / 60;
 
     stats.add("energy", perTick);
 
@@ -237,14 +237,15 @@ function destroyReactor() {
 
     stats.reset(false, true);
     upgrades.reset(false, true);
-    stats.set("destroys", prevSac);
-    if (bonus > 0) stats.add("destroys", 1);
     stats.set("matter", prev);
     stats.add("matter", bonus);
     stats.time_of_last_reactor = parseInt(Date.now());
 
     // obviously
     prestige();
+
+    stats.set("destroys", prevSac);
+    if (bonus > 0) stats.add("destroys", 1);
 
     if (!isSacrificeUnlocked()) {
         let prestigeCont = document.getElementById("prestigeContainer");

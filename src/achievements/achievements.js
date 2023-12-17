@@ -89,7 +89,10 @@ Achievements.prototype = {
         this.addNewAchievement("In The End, It Doesn't Even Matter", "Destroy your first reactor and get your first Matter Unit");
         this.addNewAchievement("Faster Than Light", "Upgrade your tickrate using Matter Units");
         this.addNewAchievement("Actual Insanity", "Upgrade both External Intake and Longer Explosions", null, "you start a run with 2000 Energy");
+        this.addNewAchievement("Extremely Funny", "Get 69420 Heat Points", check_extremely_funny, "Energy Multiplier, Enriched Atoms and Efficient Extraction upgrades become *extremely* more effective on higher upgrade levels");
         this.addNewAchievement("It's A Never Ending Cycle", "Destroy the reactor in less than 10 minutes since last time you destroyed the reactor");
+        this.addNewAchievement("Most Valuable Powerplant", "Get to 1 Billion passive Energy generation per second during Meltdown", check_mvp);
+        this.addNewAchievement("Heavy Duty", "Get a total of 24 Matter Units over all reactors", check_heavy_duty, "significantly improve Matter Unit formula");
         this.addNewAchievement("Buffed Up", "Get one of every Matter Unit upgrade");
         this.addNewAchievement("Nobody Will Believe You", "Destroy the reactor in less than one minute");
         this.addNewAchievement("The One Achievement to Rule Them All", "Complete every single achievement in the game (congratz!)", check_one_achievement_to_rule_them_all);

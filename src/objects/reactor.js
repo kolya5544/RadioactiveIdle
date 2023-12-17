@@ -21,10 +21,20 @@ Reactor.prototype = {
         this.points.update();
         
         var time = this.spawnDelay();
+        //console.log(`${time} - ${this.getNonDeployedCount()} - ${this.explodes.count} - ${(1+this.explodes.count)/this.getNonDeployedCount()}`);
         if(isFinite(time)){
             this.delay += 1;
             if(this.delay > time){
-                this.balls.add();
+                let vX = this.getTotalCount();
+                let dp = Math.floor(vX / Math.sqrt(vX));
+
+                if (this.explodes.count > 10 && vX > 10 && dp > 0) {
+                    for (let i = 0; i < dp; i++) {
+                        this.balls.add();
+                    }
+                } else {
+                    this.balls.add();
+                }
             }
         }else{
             this.delay = 0;
@@ -72,7 +82,7 @@ Reactor.prototype = {
             this.ctx.globalAlpha = 0.5;
             this.ctx.fillText("Meltdown in process!", this.canvas.width/2 - this.canvas.width/4, this.canvas.height/2);
             this.ctx.font = "24px Courier New";
-            this.ctx.fillText(`You generate ~${stringify(calc_energy_output(stats.getAll("chain")[3])*100*calc_tickrate())} Energy per second`, this.canvas.width/2 - this.canvas.width/4.2, this.canvas.height/2+this.canvas.height/30);
+            this.ctx.fillText(`You generate ~${stringify(calc_meltdown_output())} Energy per second`, this.canvas.width/2 - this.canvas.width/4.2, this.canvas.height/2+this.canvas.height/30);
             this.ctx.globalAlpha = 1.0;
             this.ctx.font = '10px sans-serif';
             this.ctx.fillStyle = "black";
@@ -87,11 +97,14 @@ Reactor.prototype = {
             y: point.y * this.canvas.height/this.height + this.canvas.height/2
         }
     },
+
+    getTotalCount: function() {
+        if (firstLaunch) return 1-this.balls.count-this.explodes.count;
+        return upgrades.get("balls")+10-this.balls.count-this.explodes.count+calc_additional_balls_reward();
+    },
     
     spawnDelay: function(){
-        var count = upgrades.get("balls")+10-this.balls.count-this.explodes.count+calc_additional_balls_reward();
-
-        if (firstLaunch) count = 1-this.balls.count-this.explodes.count;
+        var count = this.getTotalCount();
 
         let multiplier = 10;
         if (calc_faster_explosions() != 0) multiplier = 5;

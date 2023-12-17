@@ -10,7 +10,9 @@ function calc_prestige() {
 
 function calc_heat_up(current_h = null) {
     if (current_h == null) current_h = upgrades.get("heat_up");
-    return current_h+1;
+    let v = current_h+1;
+    if (current_h > 5 && achievements.get("Extremely Funny")) v = Math.pow(current_h - 1.2, 1.3);
+    return v;
 }
 
 function calc_board_size() {
@@ -44,6 +46,7 @@ function calc_actual_multiplier(current_mult = null){
     if (current_mult == null) current_mult = upgrades.get("multiplier");
     let sV = logBase((current_mult * 1.5), 1.9);
     if (current_mult > 5) sV = logBase((current_mult - 5) * 1.9, 1.1) + 4;
+    if (current_mult > 13 && achievements.get("Extremely Funny")) sV = logBase(current_mult - 12, 1.015);
     return Math.max(0, sV * calc_no_longer_needed_reward());
 }
 
@@ -95,7 +98,14 @@ function calc_eight_bits_of_heat_reward() {
 
 function calc_enrichment(current_enr = null) {
     if (current_enr == null) current_enr = upgrades.get("enrichment");
-    return Math.max(0, logBase((stats.get("heat")+1) * current_enr, 1.2));
+    let v = 0;
+    /*if (current_enr <= 4)*/ v = Math.max(0, logBase((stats.get("heat")+1) * current_enr, 1.2));
+    if (current_enr > 4 && achievements.get("Extremely Funny")) {
+        let nV = Math.pow((stats.get("heat")+1) * (current_enr - 4)/2, 0.44);
+        if (nV >= v) return nV;
+        return v;
+    }
+    return v;
 }
 
 function calc_energy_output(group = 0) {
@@ -103,7 +113,10 @@ function calc_energy_output(group = 0) {
 }
 
 function calc_matter_output() {
-    return logBase((stats.getAll("heat")[4] - 794.702), 1.9)-12;
+    let heat = stats.getAll("heat")[4];
+    let v = logBase((heat - 794.702), 1.9)-12;
+    if (achievements.get("Heavy Duty")) v = Math.pow(heat - 5000, 0.45) / 15;
+    return v;
 }
 
 function calc_tickrate(current_tick = null) {
@@ -133,4 +146,8 @@ function calc_faster_explosions(current_expl = null) {
 
 function calc_this_reaction_lifetime() {
     return (parseInt(Date.now()) - stats.time_of_last_reactor)/1000;
+}
+
+function calc_meltdown_output() {
+    return calc_energy_output(stats.getAll("chain")[3])*100*calc_tickrate();
 }

@@ -258,6 +258,7 @@ function destroyReactor() {
 
     if (upgrades.get("controllable_meltdown") > 0) {
         // woo!
-        stats.add("heat", 128);
+        //stats.add("heat", 512);
+        upgrades.set("meltdown", 1);
     }
 }

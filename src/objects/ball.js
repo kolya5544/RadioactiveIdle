@@ -13,7 +13,7 @@ Ball.prototype = {
         }
         reactor.balls.remove(this);
         reactor.explodes.add(this, group);
-        var pts = calc_energy_output(group[0]);
+        var pts = calc_energy_output(group[0]) * calc_extremely_funny_2_reward();
         reactor.points.add(reactor.transformed(this), pts);
         stats.add("energy", pts);
         stats.add("explosions", 1);

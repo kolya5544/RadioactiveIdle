@@ -185,6 +185,11 @@ function prestige(){
         achievements.setCompletion("Eight Bits of Heat", true, true);
     }
 
+    // "Extremely F- wait, didn't I already unlock this achievement?"
+    if (bonus >= 69420) {
+        achievements.setCompletion("Extremely F- wait, didn't I already unlock this achievement?", true, true);
+    }
+
     // "Radioactive: Now Idle!" achievement check
     if (bonus >= 16 && upgrades.get("time") == 0 && upgrades.get("size") == 0 && upgrades.get("balls") == 0 && upgrades.get("speed") == 0 && stats.get("clicks") == 0) {
         achievements.setCompletion("Radioactive: Now Idle!", true, true);

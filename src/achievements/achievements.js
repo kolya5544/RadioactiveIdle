@@ -93,6 +93,7 @@ Achievements.prototype = {
         this.addNewAchievement("It's A Never Ending Cycle", "Destroy the reactor in less than 10 minutes since last time you destroyed the reactor");
         this.addNewAchievement("Most Valuable Powerplant", "Get to 1 Billion passive Energy generation per second during Meltdown", check_mvp);
         this.addNewAchievement("Heavy Duty", "Get a total of 24 Matter Units over all reactors", check_heavy_duty, "significantly improve Matter Unit formula");
+        this.addNewAchievement("Extremely F- wait, didn't I already unlock this achievement?", "Get over 69420 Heat Points in a single Sacrifice", null, "Energy gain bonus that is almost linearly affected by the amount of unspent Matter Units (capped at ~1000 MU)");
         this.addNewAchievement("Buffed Up", "Get one of every Matter Unit upgrade");
         this.addNewAchievement("Nobody Will Believe You", "Destroy the reactor in less than one minute");
         this.addNewAchievement("The One Achievement to Rule Them All", "Complete every single achievement in the game (congratz!)", check_one_achievement_to_rule_them_all);

@@ -11,7 +11,7 @@ function calc_prestige() {
 function calc_heat_up(current_h = null) {
     if (current_h == null) current_h = upgrades.get("heat_up");
     let v = current_h+1;
-    if (current_h > 5 && achievements.get("Extremely Funny")) v = Math.pow(current_h - 1.2, 1.3);
+    if (current_h > 5 && achievements.get("Extremely Funny")) v = Math.pow(current_h - 3, 2);
     return v;
 }
 
@@ -78,6 +78,13 @@ function calc_modern_problems_reward() {
     }
 
     return v;
+}
+
+function calc_extremely_funny_2_reward() {
+    if (!achievements.get("Extremely F- wait, didn't I already unlock this achievement?")) return 1;
+    let mu = Math.min(stats.get("matter"), 1000);
+
+    return Math.pow(mu, 1.1) / 10 + 1;
 }
 
 function calc_get_hours_of_playtime() {
@@ -149,5 +156,5 @@ function calc_this_reaction_lifetime() {
 }
 
 function calc_meltdown_output() {
-    return calc_energy_output(stats.getAll("chain")[3])*100*calc_tickrate();
+    return calc_energy_output(stats.getAll("chain")[3])*100*calc_tickrate() * calc_extremely_funny_2_reward();
 }

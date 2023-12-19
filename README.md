@@ -21,16 +21,16 @@ Current stages of the game include:
   <summary>Spoiler warning</summary>
   
 1. Pre-Sacrifice. That's where you begin the game (`0 - 695 000 E`)
-   1.1. Pre-chain reaction. (`0 - ~5000 E`)
-   1.2. Post-chain reaction. That's where you are getting a stable chain reaction enough to carry you to unlocking Sacrifice. (`~5000 - 695000+ E`)
+   - Pre-chain reaction. (`0 - ~5000 E`)
+   - Post-chain reaction. That's where you are getting a stable chain reaction enough to carry you to unlocking Sacrifice. (`~5000 - 695000+ E`)
 2. Post-Sacrifice. You begin gathering up Heat and increasing your Energy output (`0 - 1000 HP`)
-   2.1. Pre-Extraction. You don't yet have the proper means of increasing your Heat production (`0 - 200 HP`)
-   2.2. Post-Extraction. Your Heat output is greatly increased, allowing you to reach new heights easily (`200 - 1000 HP`)
+   - Pre-Extraction. You don't yet have the proper means of increasing your Heat production (`0 - 200 HP`)
+   - Post-Extraction. Your Heat output is greatly increased, allowing you to reach new heights easily (`200 - 1000 HP`)
 3. Meltdown. The reaction rapidly and passively generates Energy (`1000 - 5000 HP`)
 4. Destroy the reactor. You destroy the reactor for trace amount of Matter Units (`5000+ HP`, `1 - 1000 MU`)
-   4.1. Pre-External Intake. You use tickspeed and multiplier upgrades to buff up your Energy and Heat Point production greatly. (`1 - ~16 MU`)
-   4.2. Pre-69420 HP. Gradually obtain Rapid Delay and other valuable upgrades. (`~16 - ~40 MU`)
-   4.3. Automata. Get Heat Control System and obtain the achievements to unlock automatic upgrade buyer. Start passive HP production (`~40 - 1000 MU`)
+   - Pre-External Intake. You use tickspeed and multiplier upgrades to buff up your Energy and Heat Point production greatly. (`1 - ~16 MU`)
+   - Pre-69420 HP. Gradually obtain Rapid Delay and other valuable upgrades. (`~16 - ~40 MU`)
+   - Automata. Get Heat Control System and obtain the achievements to unlock automatic upgrade buyer. Start passive HP production (`~40 - 1000 MU`)
 5. Endgame (`1000+ MU`). Obtain generic Matter Unit upgrades, eventually reaching sextillions of Energy and trillions of Heat Points.
 </details>
 

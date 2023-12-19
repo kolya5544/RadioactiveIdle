@@ -40,11 +40,12 @@ function update_progress_value() {
         perc = logBase((stats.getAll("heat")[0] + 100) / 100, 5) * (Math.log(5) / Math.log(11));
         //if (perc >= 1) allowMeltdown();
     } else if (stage == 3) {
-        if (stats.getAll("heat")[4] <= 5000) {
+        if (stats.getAll("heat")[4] <= 5000 && !upgrades.get("heat_generator")) {
             perc = logBase(stats.getAll("heat")[4] / 1000, 10) * (Math.log(10) / Math.log(5));
         } else {
             let v = calc_matter_output();
             let nextV = v - Math.floor(v);
+            if (isNaN(nextV)) nextV = 0;
             perc = nextV;
         }
     }
@@ -72,7 +73,7 @@ function update_progress_text() {
 }
 
 function isSacrificeUnlocked() {
-    return stats.getAll("heat")[2] > 0 || stats.getAll("energy")[3] >= 6.95*Math.pow(10, 5);
+    return stats.getAll("heat")[2] > 0 || stats.getAll("energy")[3] >= 6.95*Math.pow(10, 5) || upgrades.get("meltdown") > 0;
 }
 
 function doesHaveMeltdownBought() {

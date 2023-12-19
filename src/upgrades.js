@@ -18,7 +18,7 @@ function initMatterUpgrades() {
     upgrades.addUpgrade("stronger_walls", 0, "Stronger Walls", "matter", "Reactor size increase starts significantly later").cost(1, 2).button([1, 0]);
     upgrades.addUpgrade("faster_explosions", 0, "External Intake", "matter", "Explosions last for *less* time", 0, faster_explosions_allow_once, faster_explosions_buy_max).cost(10, 2).button([1, 0]);
     upgrades.addUpgrade("controllable_meltdown", 0, "Rapid Decay", "matter", "Start every game with Meltdown unlocked", 0, controllable_meltdown_allow_once, controllable_meltdown_buy_max).cost(50, 2).button([1, 0]);
-    upgrades.addUpgrade("heat_generator", 0, "Heat Control System", "matter", "Generate 1/15th of current Sacrifice reward per minute (affected by tickrate)", 0, hcs_allow_once, hcs_buy_max).cost(100, 2).button([1, 0]);
+    upgrades.addUpgrade("heat_generator", 0, "Heat Control System", "matter", "Generate 1/10th of current Sacrifice reward per minute (affected by tickrate)", 0, hcs_allow_once, hcs_buy_max).cost(100, 2).button([1, 0]);
 }
 
 function meltdown_allow_once(factor, base, current, number) {
@@ -119,10 +119,14 @@ Upgrade.prototype = {
         }
         return stats.get(this.currency) >= this.getCost(amount);
     },
+
+    getMaxBuyCount: function() {
+        return this.getMaxBuy(stats.get(this.currency));
+    },
     
     buy: function(amount){
         if(amount <= 0){
-            var amount = this.getMaxBuy(stats.get(this.currency))
+            var amount = this.getMaxBuyCount();
         }
         var cost = this.getCost(amount)
         if(stats.get(this.currency) >= cost && cost != -1){
@@ -338,5 +342,15 @@ Upgrades.prototype = {
         if (this.matterCount != undefined) this.matterCount.innerHTML = ""+stringify(stats.get("matter"));
 
         if (this.energyCount != undefined) this.energyCount.innerHTML = ""+stringify(stats.get("energy"));
+    },
+
+    getAll: function() {
+        nU = [];
+
+        for (var key in this.upgrades) {
+            nU.push(this.upgrades[key].get());
+        }
+
+        return nU;
     }
 }

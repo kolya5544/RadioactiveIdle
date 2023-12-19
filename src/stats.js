@@ -88,6 +88,8 @@ function Stats(){
     this.time_of_last_reactor = 0;
     this.sacrificedBefore = false;
     this.gotMeltdownBefore = false;
+
+    this.automataMinionEnabled = true;
 };
 
 Stats.prototype = {
@@ -109,10 +111,13 @@ Stats.prototype = {
         this.time_of_last_reactor = tor == null ? parseInt(Date.now()) : parseInt(tor);
 
         let sacrificedBefore = localStorage.getItem("sacrificedBefore");
-        this.sacrificedBefore = sacrificedBefore == null ? 0 : sacrificedBefore == "true";
+        this.sacrificedBefore = sacrificedBefore == null ? false : sacrificedBefore == "true";
 
         let gotMeltdownBefore = localStorage.getItem("gotMeltdownBefore");
-        this.gotMeltdownBefore = gotMeltdownBefore == null ? 0 : gotMeltdownBefore == "true";
+        this.gotMeltdownBefore = gotMeltdownBefore == null ? false : gotMeltdownBefore == "true";
+
+        let automataMinionEnabled = localStorage.getItem("automataMinionEnabled");
+        this.automataMinionEnabled = automataMinionEnabled == null ? true : automataMinionEnabled == "true";
     },
     
     save: function(){
@@ -128,6 +133,8 @@ Stats.prototype = {
 
         localStorage.setItem("sacrificedBefore", this.sacrificedBefore);
         localStorage.setItem("gotMeltdownBefore", this.gotMeltdownBefore);
+
+        localStorage.setItem("automataMinionEnabled", document.getElementById("automataCheckbox").checked);
     },
     
     reset: function(hardReset = false, matterReset = false){

@@ -3,7 +3,7 @@ function Point(pos, pts){
     this.text = "+"+stringify(pts);
     this.x = pos.x - reactor.ctx.measureText(this.text).width/2;
     this.y = pos.y+5;
-    this.time = 50;
+    this.time = 50 / calc_tickrate() * Math.pow(calc_tickrate(), 2/3);
 };
 
 Point.prototype = {

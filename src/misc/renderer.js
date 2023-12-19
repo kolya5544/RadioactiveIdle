@@ -244,6 +244,32 @@ function renderPrestige() {
     document.getElementById("destroyReactor").addEventListener("click", destroyReactor);
 
     upgrades.energyCount = document.getElementById("energyDisplay");
+
+    // add the ultimate checkbox for automata minion
+    //<input type="checkbox" id="automataCheckbox" name="automataCheckbox" value="">
+    //<label for="automataCheckbox"> Enable Automata Minions</label>
+
+    
+    let iInput = document.createElement("input");
+    iInput.type = "checkbox";
+    iInput.id = "automataCheckbox";
+    iInput.name = "automataCheckbox";
+    iInput.style.display = "none";
+    if (achievements.get("Nuclear Automaton")) { iInput.style.display = ""; }
+
+    prestigeCont.appendChild(iInput);
+
+    let iLabel = document.createElement("label");
+    iLabel.for = "automataCheckbox";
+    iLabel.innerText = " Enable Automata Minions";
+    iLabel.id = "automataLabel";
+    iLabel.style.display = "none";
+    if (achievements.get("Nuclear Automaton")) { iLabel.style.display = ""; }
+
+    prestigeCont.appendChild(iLabel);
+
+    document.getElementById("automataCheckbox").addEventListener("change", automataCheckboxHandle);
+    
 }
 
 function showPrestige() {

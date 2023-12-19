@@ -96,6 +96,7 @@ Achievements.prototype = {
         this.addNewAchievement("Extremely F- wait, didn't I already unlock this achievement?", "Get over 69420 Heat Points in a single Sacrifice", null, "Energy gain bonus that is almost linearly affected by the amount of unspent Matter Units (capped at ~1000 MU)");
         this.addNewAchievement("Buffed Up", "Get one of every Matter Unit upgrade");
         this.addNewAchievement("Nobody Will Believe You", "Destroy the reactor in less than one minute");
+        this.addNewAchievement("Nuclear Automaton", "Destroy the reactor without getting any normal or Heat Upgrades (except for Meltdown), as well as without Sacrificing", null, "unlock Automata Minions that will automatically acquire 200 of Bigger Explosions, Faster Atoms and Extra Atoms");
         this.addNewAchievement("The One Achievement to Rule Them All", "Complete every single achievement in the game (congratz!)", check_one_achievement_to_rule_them_all);
 
         this.draw();

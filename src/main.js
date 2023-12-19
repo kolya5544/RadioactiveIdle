@@ -51,6 +51,8 @@ function init(){
         document.getElementById("matterContainer").style.visibility = "";       
     }
 
+    document.getElementById("automataCheckbox").checked = stats.automataMinionEnabled;
+
     start();
     
     //requestAnimFrame(update);
@@ -72,10 +74,25 @@ function update(draw_graphics = true){
     if (upgrades.get("heat_generator") > 0) {
         // woo!
         let bonus = calc_prestige();
-        let oneSixth = (bonus / 15);
+        let oneSixth = (bonus / 10);
         let tickGain = Math.round(oneSixth / 60 / 60 * calc_tickrate() * 100) / 100; // / tickSpeed / minute
 
         stats.add("heat", tickGain);
+    }
+
+    // handle Automata Minions!
+    if (achievements.get("Nuclear Automaton") && stats.automataMinionEnabled && tickCount % 20 == 0) {
+        let cntBig = Math.max(200 - upgrades.get("size"), 0); // LARGE EXPLOSIONS
+        let maxBig = Math.min(upgrades.upgrades["size"].getMaxBuyCount(), cntBig);
+        if (cntBig > 0) upgrades.upgrades["size"].buy(maxBig);
+
+        cntBig = Math.max(200 - upgrades.get("balls"), 0); // EXTRA ATOMS
+        maxBig = Math.min(upgrades.upgrades["balls"].getMaxBuyCount(), cntBig);
+        if (cntBig > 0) upgrades.upgrades["balls"].buy(maxBig);
+
+        cntBig = Math.max(200 - upgrades.get("speed"), 0); // SPEEEEED
+        maxBig = Math.min(upgrades.upgrades["speed"].getMaxBuyCount(), cntBig);
+        if (cntBig > 0) upgrades.upgrades["speed"].buy(maxBig);
     }
 
     trackProgress();
@@ -96,6 +113,18 @@ function processMeltdown() {
             ball.explode([current]);
             return;
         }
+    }
+
+    // update stuff
+    if (stats.get("heat") > 0) {
+        document.getElementById("heatCount").style.display = "";
+    }
+
+    var m_p_e = document.getElementById("matterPrestigeElm");
+    if (checkCanMatter()) {
+        m_p_e.style.display = "";
+    } else {
+        m_p_e.style.display = "none";
     }
 
     // once per 3 seconds, spawn a big random explosion in the background
@@ -217,11 +246,16 @@ function prestige(){
 };
 
 function destroyReactor() {
-    flash();
+    if (!achievements.get("Nobody Will Believe You")) flash();
 
     var prev = stats.get("matter");
     var prevSac = stats.get("destroys");
     var bonus = calc_matter_output();
+
+    let upg = upgrades.getAll();
+    if (upg[0] + upg[1] + upg[2] + upg[3] + upg[4] + upg[5] + upg[6] == 0 && stats.get("sacrifices") == 0) {
+        achievements.setCompletion("Nuclear Automaton", true, true);
+    }
 
     if (bonus > 0) {
         document.getElementById("matterCount").style.display = "";
@@ -252,11 +286,6 @@ function destroyReactor() {
     stats.set("destroys", prevSac);
     if (bonus > 0) stats.add("destroys", 1);
 
-    if (!isSacrificeUnlocked()) {
-        let prestigeCont = document.getElementById("prestigeContainer");
-        prestigeCont.style.visibility = "hidden";
-    }
-
     if (stats.getAll("matter")[1] > 0) {
         document.getElementById("matterContainer").style.visibility = "";       
     }
@@ -266,4 +295,19 @@ function destroyReactor() {
         //stats.add("heat", 512);
         upgrades.set("meltdown", 1);
     }
+
+    if (!isSacrificeUnlocked()) {
+        let prestigeCont = document.getElementById("prestigeContainer");
+        prestigeCont.style.visibility = "hidden";
+    }
+
+    if (achievements.get("Nuclear Automaton")) { 
+        document.getElementById("automataLabel").style.display = "";
+        document.getElementById("automataCheckbox").style.display = "";
+    }
+}
+
+function automataCheckboxHandle() {
+    let a = document.getElementById("automataCheckbox");
+    stats.automataMinionEnabled = a.checked;
 }

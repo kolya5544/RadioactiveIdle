@@ -143,6 +143,12 @@ Stats.prototype = {
                 this.setAll(stat, [0, 0, 0, 0, 0]);
             }
             this.time_of_beginning = parseInt(Date.now());
+            this.time_of_save = 0;
+            this.time_of_last_prestige = parseInt(Date.now());
+            this.time_of_last_reactor = parseInt(Date.now());
+            this.sacrificedBefore = false;
+            this.gotMeltdownBefore = false;
+            this.automataMinionEnabled = true;
         }else{
             for(var stat in this.stats){
                 this.set(stat, 0)

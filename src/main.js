@@ -305,6 +305,10 @@ function destroyReactor() {
         document.getElementById("automataLabel").style.display = "";
         document.getElementById("automataCheckbox").style.display = "";
     }
+
+    if (stats.get("matter") >= 1000) {
+        achievements.setCompletion("...but I thought there would be another prestige layer?", true, true);
+    }
 }
 
 function automataCheckboxHandle() {

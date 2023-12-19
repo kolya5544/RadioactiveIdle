@@ -261,7 +261,7 @@ function renderPrestige() {
 
     let iLabel = document.createElement("label");
     iLabel.for = "automataCheckbox";
-    iLabel.innerText = " Enable Automata Minions";
+    iLabel.innerText = " Enable Automata Minions - automatically buy essential Normal Upgrades";
     iLabel.id = "automataLabel";
     iLabel.style.display = "none";
     if (achievements.get("Nuclear Automaton")) { iLabel.style.display = ""; }

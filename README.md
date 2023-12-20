@@ -9,7 +9,7 @@ Original PoC idea by https://github.com/bluecheetah001/ChainReaction
 
 ## Access it now!
 
-The project is in *open beta* and might have a lot of bugs. The game runs in your browser. You can access it here: [https://raw.githubusercontent.com/kolya5544/RadioactiveIdle/master/atom.png](https://nk.ax/radioactive/)
+The project is in *open beta* and might have a lot of bugs. The game runs in your browser. You can access it here: [<img src="https://raw.githubusercontent.com/kolya5544/RadioactiveIdle/master/atom.png">](https://nk.ax/radioactive/)
 
 ## Gameplay
 #### *[SPOILERS AHEAD!! Proceed with some sort of caution...]*

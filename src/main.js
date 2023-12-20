@@ -189,14 +189,14 @@ function importGame(game) {
     Object.keys(data).forEach(function (k) {
         if (k == "achievements") {
             // custom handling
-            let keyV = k;
+            let dt = data[k];
 
-            keyV = keyV.replaceAll("Don\"t", "Don't")
+            dt = dt.replaceAll("Don\"t", "Don't")
                                    .replaceAll("Doesn\"t", "Doesn't")
                                    .replaceAll("It\"s", "It's")
                                    .replaceAll("didn\"t", "didn't");
 
-            localStorage.setItem(keyV, data[k]);
+            localStorage.setItem(k, dt);
             return;
         }
         localStorage.setItem(k, data[k]);

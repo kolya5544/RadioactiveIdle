@@ -132,8 +132,12 @@ function renderStats() {
         }
 
         stats.stats[key].elems = [document.getElementById(key),
-            document.getElementById(key+"Total"),
-            document.getElementById(key+"Max")];
+            null,
+            document.getElementById(key+"Max"),
+            null,
+            null,
+            document.getElementById(key+"Total")
+        ];
     });
 
     // render playtime stat

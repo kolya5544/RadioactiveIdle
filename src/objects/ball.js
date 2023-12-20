@@ -17,6 +17,7 @@ Ball.prototype = {
         reactor.points.add(reactor.transformed(this), pts);
         stats.add("energy", pts);
         stats.add("explosions", 1);
+        stats.add("chain", 1);
         stats.set("chain", group[0]+1);
     },
     

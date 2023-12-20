@@ -139,7 +139,7 @@ function processMeltdown() {
 function save(){
     if (!loadedSuccessfully) return;
 
-    localStorage.setItem("ver", "v0.1");
+    localStorage.setItem("ver", "v1.0");
     upgrades.save();
     stats.save();
     achievements.save();
@@ -181,12 +181,24 @@ function reset(){
 };
 
 function exportGame() {
-    console.log(JSON.stringify(localStorage));
+    console.log(JSON.stringify(localStorage).replaceAll("\\\"", "'"));
 }
 
 function importGame(game) {
     var data = JSON.parse(game.replaceAll("'", "\\\""));
     Object.keys(data).forEach(function (k) {
+        if (k == "achievements") {
+            // custom handling
+            let keyV = k;
+
+            keyV = keyV.replaceAll("Don\"t", "Don't")
+                                   .replaceAll("Doesn\"t", "Doesn't")
+                                   .replaceAll("It\"s", "It's")
+                                   .replaceAll("didn\"t", "didn't");
+
+            localStorage.setItem(keyV, data[k]);
+            return;
+        }
         localStorage.setItem(k, data[k]);
     });
     save = null;

@@ -118,6 +118,7 @@ function processMeltdown() {
     // update stuff
     if (stats.get("heat") > 0) {
         document.getElementById("heatCount").style.display = "";
+        document.getElementById("energyCount").style.display = "";
     }
 
     var m_p_e = document.getElementById("matterPrestigeElm");

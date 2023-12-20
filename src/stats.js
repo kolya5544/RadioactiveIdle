@@ -14,7 +14,7 @@ function addStats(){
 function Stat(name, decimal){
     this.name = name;
     this.elems = null;
-    this.values = [0,0,0,0,0]; //value, max, total, max this run, max this reactor
+    this.values = [0,0,0,0,0,0]; //value, max, total, max this run, max this reactor, ALL TIME TOTAL !!!!!
     this.exponent = decimal;
     this.decimal = Math.pow(10, decimal);
 };
@@ -45,6 +45,7 @@ Stat.prototype = {
         this.values[0] += value;
         if(value>0){
             this.values[1] += value;
+            this.values[5] += value;
         }
         if(this.values[0] > this.values[2]){
             this.values[2] = this.values[0];
@@ -62,14 +63,14 @@ Stat.prototype = {
     },
     
     getAll: function(i){
-        return [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4)];
+        return [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5)];
     },
     
     draw: function(){
         for(var i in this.values){
             if(this.elems[i]){ //not null
                 let v = this.get(i);
-                if (this.getAll(i)[2] == 0) { this.elems[i].parentElement.style.display = "none"; } else { this.elems[i].parentElement.style.display = ""; }
+                if (this.getAll(i)[5] == 0) { this.elems[i].parentElement.style.display = "none"; } else { this.elems[i].parentElement.style.display = ""; }
                 this.elems[i].innerHTML = ""+stringify(v);
             }
         }
@@ -140,7 +141,7 @@ Stats.prototype = {
     reset: function(hardReset = false, matterReset = false){
         if(hardReset){
             for(var stat in this.stats){
-                this.setAll(stat, [0, 0, 0, 0, 0]);
+                this.setAll(stat, [0, 0, 0, 0, 0, 0]);
             }
             this.time_of_beginning = parseInt(Date.now());
             this.time_of_save = 0;
@@ -156,10 +157,10 @@ Stats.prototype = {
                 if (matterReset) {
                     if (stat == "matter") {
                         let v = this.getAll("matter");
-                        this.setAll(stat, [0, v[1], v[2], v[3], v[4]]);
+                        this.setAll(stat, [0, v[1], v[2], v[3], v[4], v[5]]);
                         continue;
                     }
-                    this.setAll(stat, [0, 0, 0, 0, 0]);
+                    this.setAll(stat, [0, 0, 0, 0, 0, 0]);
                 }
             }
         }

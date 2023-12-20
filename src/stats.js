@@ -160,7 +160,8 @@ Stats.prototype = {
                         this.setAll(stat, [0, v[1], v[2], v[3], v[4], v[5]]);
                         continue;
                     }
-                    this.setAll(stat, [0, 0, 0, 0, 0, 0]);
+                    let z = this.getAll(stat);
+                    this.setAll(stat, [0, 0, 0, 0, 0, z[5]]);
                 }
             }
         }

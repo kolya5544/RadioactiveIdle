@@ -162,10 +162,11 @@ Upgrade.prototype = {
         }
 
         this.updateSubtext();
+        this.draw(true);
     },
     
-    draw: function(){
-        if (tickCount % 10 != 0) return;
+    draw: function(force_draw = false){
+        if (tickCount % 10 != 0 && !force_draw) return;
         if (offlineProgressOn) return;
 
         let valueElem = this.tableElem.children[1];

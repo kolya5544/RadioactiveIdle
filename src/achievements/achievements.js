@@ -15,7 +15,7 @@ Achievement.prototype = {
     },
 
     draw: function() {
-        let curr_name = this.name.replace(/[^\w\s]/gi, '').replace(" ", "_").toLowerCase();
+        let curr_name = this.name.replaceAll(/[^\w\s]/gi, '').replaceAll(" ", "_").toLowerCase();
         let el = document.getElementById(curr_name);
         if (el == null) {
             // draw it!

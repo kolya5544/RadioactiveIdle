@@ -169,6 +169,12 @@ Upgrade.prototype = {
         let cost = this.getCost();
         let maxBuy = this.getMaxBuyCount();
 
+        if (maxBuy > 0) {
+            this.buttonElems[2].innerText = `${maxBuy}`;
+        } else {
+            this.buttonElems[2].innerText = `max`;
+        }
+
         if (cost == -1) {
             this.tableElem.children[2].style.visibility = "hidden";
             this.tableElem.children[3].style.visibility = "hidden";

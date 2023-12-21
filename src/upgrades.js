@@ -1,24 +1,24 @@
 function initUpgrades(){
-    upgrades.addUpgrade("size", 0, "Bigger Explosions").cost(10, 1.1).button([1, 0]);
-    upgrades.addUpgrade("time", 0, "Longer Explosions").cost(10, 1.1).button([1, 0]);
-    upgrades.addUpgrade("speed", 0, "Faster Atoms").cost(10, 1.1).button([1, 0]);
-    upgrades.addUpgrade("balls", 0, "Extra Atoms").cost(50, 1.1).button([1, 0]);
+    upgrades.addUpgrade("size", 0, "Bigger Explosions").cost(10, 1.1).button([1, 10, 0]);
+    upgrades.addUpgrade("time", 0, "Longer Explosions").cost(10, 1.1).button([1, 10, 0]);
+    upgrades.addUpgrade("speed", 0, "Faster Atoms").cost(10, 1.1).button([1, 10, 0]);
+    upgrades.addUpgrade("balls", 0, "Extra Atoms").cost(50, 1.1).button([1, 10, 0]);
 };
 
 function initHeatUpgrades() {
-    upgrades.addUpgrade("multiplier", 0, "Energy Multiplier", "heat", "Get more energy per each explosion").cost(1, 2).button([1, 0]);
-    upgrades.addUpgrade("enrichment", 0, "Enriched Atoms", "heat", "Get more energy the more Heat Points you currently have.", 16).cost(48, 4).button([1, 0]);
-    upgrades.addUpgrade("heat_up", 0, "Efficient Extraction", "heat", "Increase the amount of Heat Points you get on Sacrifice.", 128).cost(200, 3).button([1, 0]);
-    upgrades.addUpgrade("meltdown", 0, "Meltdown", "heat", "Passively generate x100 this run's best chain reaction output every second. Starts an uncontrollable chain reaction, consuming everything on its way.", 1000, meltdown_allow_once, meltdown_buy_max).cost(1000, 1).button([1, 0]);
+    upgrades.addUpgrade("multiplier", 0, "Energy Multiplier", "heat", "Get more energy per each explosion").cost(1, 2).button([1, 10, 0]);
+    upgrades.addUpgrade("enrichment", 0, "Enriched Atoms", "heat", "Get more energy the more Heat Points you currently have.", 16).cost(48, 4).button([1, 10, 0]);
+    upgrades.addUpgrade("heat_up", 0, "Efficient Extraction", "heat", "Increase the amount of Heat Points you get on Sacrifice.", 128).cost(200, 3).button([1, 10, 0]);
+    upgrades.addUpgrade("meltdown", 0, "Meltdown", "heat", "Passively generate x100 this run's best chain reaction output every second. Starts an uncontrollable chain reaction, consuming everything on its way.", 1000, meltdown_allow_once, meltdown_buy_max).cost(1000, 1).button([1, 10, 0]);
 }
 
 function initMatterUpgrades() {
-    upgrades.addUpgrade("tickspeed", 0, "Particle Accelerator", "matter", "All processes in the game happen at a faster rate").cost(2, 2).button([1, 0]);
-    upgrades.addUpgrade("heat_matter_multiplier", 0, "Nuclear Explosion", "matter", "Double Heat Point gain on Sacrifice").cost(2, 2).button([1, 0]);
-    upgrades.addUpgrade("stronger_walls", 0, "Stronger Walls", "matter", "Reactor size increase starts significantly later").cost(1, 2).button([1, 0]);
-    upgrades.addUpgrade("faster_explosions", 0, "External Intake", "matter", "Explosions last for *less* time", 0, faster_explosions_allow_once, faster_explosions_buy_max).cost(10, 2).button([1, 0]);
-    upgrades.addUpgrade("controllable_meltdown", 0, "Rapid Decay", "matter", "Start every game with Meltdown unlocked", 0, controllable_meltdown_allow_once, controllable_meltdown_buy_max).cost(50, 2).button([1, 0]);
-    upgrades.addUpgrade("heat_generator", 0, "Heat Control System", "matter", "Generate 1/10th of current Sacrifice reward per minute (affected by tickrate)", 0, hcs_allow_once, hcs_buy_max).cost(100, 2).button([1, 0]);
+    upgrades.addUpgrade("tickspeed", 0, "Particle Accelerator", "matter", "All processes in the game happen at a faster rate").cost(2, 2).button([1, 10, 0]);
+    upgrades.addUpgrade("heat_matter_multiplier", 0, "Nuclear Explosion", "matter", "Double Heat Point gain on Sacrifice").cost(2, 2).button([1, 10, 0]);
+    upgrades.addUpgrade("stronger_walls", 0, "Stronger Walls", "matter", "Reactor size increase starts significantly later").cost(1, 2).button([1, 10, 0]);
+    upgrades.addUpgrade("faster_explosions", 0, "External Intake", "matter", "Explosions last for *less* time", 0, faster_explosions_allow_once, faster_explosions_buy_max).cost(10, 2).button([1, 10, 0]);
+    upgrades.addUpgrade("controllable_meltdown", 0, "Rapid Decay", "matter", "Start every game with Meltdown unlocked", 0, controllable_meltdown_allow_once, controllable_meltdown_buy_max).cost(50, 2).button([1, 10, 0]);
+    upgrades.addUpgrade("heat_generator", 0, "Heat Control System", "matter", "Generate 1/10th of current Sacrifice reward per minute (affected by tickrate)", 0, hcs_allow_once, hcs_buy_max).cost(100, 2).button([1, 10, 0]);
 }
 
 function meltdown_allow_once(factor, base, current, number) {
@@ -166,8 +166,10 @@ Upgrade.prototype = {
     
     draw: function(){
         let valueElem = this.tableElem.children[1];
+        let cost = this.getCost();
+        let maxBuy = this.getMaxBuyCount();
 
-        if (this.getCost() == -1) {
+        if (cost == -1) {
             this.tableElem.children[2].style.visibility = "hidden";
             this.tableElem.children[3].style.visibility = "hidden";
             this.tableElem.children[4].style.visibility = "hidden";
@@ -179,14 +181,18 @@ Upgrade.prototype = {
 
         valueElem.innerHTML = ""+stringify(this.get());
         if(typeof this.getCost !== "undefined"){
-            var cost = this.getCost();
             this.costElem.innerHTML = " "+stringify(cost);
             if(stats.get(this.currency) >= cost && cost != -1){
-                this.buttonElems[0].className = "button active"
-                this.buttonElems[1].className = "button active"
+                this.buttonElems[0].className = "button active";
+                this.buttonElems[2].className = "button active";
             }else{
-                this.buttonElems[0].className = "button inactive"
-                this.buttonElems[1].className = "button inactive"
+                this.buttonElems[0].className = "button inactive";
+                this.buttonElems[2].className = "button inactive";
+            }
+            if (maxBuy >= 10) {
+                this.buttonElems[1].className = "button active";
+            } else {
+                this.buttonElems[1].className = "button inactive";
             }
             if (this.currency_requirement != null) {
                 visible = stats.getAll(this.currency)[2] >= this.currency_requirement;

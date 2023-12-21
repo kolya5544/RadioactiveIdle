@@ -41,6 +41,8 @@ function renderUpgrade(name, displayName, upgradeCont = null, additionalClassCon
     iSpan.className = "group";
     let iBtn = document.createElement("span"); iBtn.className = "button"; iBtn.innerText = "1";
     iSpan.appendChild(iBtn);
+    iBtn = document.createElement("span"); iBtn.className = "button"; iBtn.innerText = "10";
+    iSpan.appendChild(iBtn);
     iBtn = document.createElement("span"); iBtn.className = "button"; iBtn.innerText = "max";
     iSpan.appendChild(iBtn);
 

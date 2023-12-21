@@ -24,6 +24,10 @@
     cursor: pointer;
 }
 
+.group {
+    user-select: none;
+}
+
 .group>* {
     width: 30px;
     margin-left: -1px;

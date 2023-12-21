@@ -39,6 +39,7 @@ Explosion.prototype = {
         reactor.ctx.lineWidth = (this.radius-this.inner);
         reactor.ctx.beginPath();
         reactor.ctx.arc(this.x, this.y, (this.radius+this.inner)/2, 0, Math.PI*2);
+        reactor.ctx.closePath();
         reactor.ctx.stroke();
     }
 };

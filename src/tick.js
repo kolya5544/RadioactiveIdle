@@ -33,7 +33,7 @@ function step(depth = 0) {
         offlineProgressOn = false;
     }
     // do what is to be done
-    tickCount += 1 * (rapidOfflineProgress ? 10 : 1);
+    tickCount += 1 * (rapidOfflineProgress && offlineProgressOn ? 10 : 1);
     update(!offlineProgressOn);
 
     if (offlineProgressOn && rapidOfflineProgress) { expected += interval * 10; } else {

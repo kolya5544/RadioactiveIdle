@@ -15,6 +15,8 @@ Achievement.prototype = {
     },
 
     draw: function() {
+        if (tickCount % 30 != 0) return;
+
         let curr_name = this.name.replaceAll(/[^\w\s]/gi, '').replaceAll(" ", "_").toLowerCase();
         let el = document.getElementById(curr_name);
         if (el == null) {

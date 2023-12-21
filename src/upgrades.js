@@ -165,6 +165,7 @@ Upgrade.prototype = {
     },
     
     draw: function(){
+        if (tickCount % 10 != 0) return;
         if (offlineProgressOn) return;
 
         let valueElem = this.tableElem.children[1];

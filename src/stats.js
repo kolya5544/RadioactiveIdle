@@ -67,6 +67,7 @@ Stat.prototype = {
     },
     
     draw: function(){
+        if (tickCount % 2 != 0) return;
         if (offlineProgressOn) return;
         
         for(var i in this.values){

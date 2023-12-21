@@ -67,6 +67,8 @@ Stat.prototype = {
     },
     
     draw: function(){
+        if (offlineProgressOn) return;
+        
         for(var i in this.values){
             if(this.elems[i]){ //not null
                 let v = this.get(i);

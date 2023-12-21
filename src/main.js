@@ -328,3 +328,11 @@ function automataCheckboxHandle() {
     let a = document.getElementById("automataCheckbox");
     stats.automataMinionEnabled = a.checked;
 }
+
+function keypress(e) {
+    let keynum = String.fromCharCode(e.which).toLowerCase();
+    
+    if (keynum == "t") {
+        rapidOfflineProgress = !rapidOfflineProgress;
+    }
+}

@@ -60,8 +60,9 @@ Reactor.prototype = {
             this.ctx.globalAlpha = 0.2;
             this.ctx.fillRect(0, 0, reactor.canvas.width, reactor.canvas.height);
             this.ctx.globalAlpha = 1.0;
-            this.ctx.fillText("Calculating offline progress...", this.canvas.width/2 - this.canvas.width/4, this.canvas.height/2);
-            this.ctx.fillText(`${offlineProgressTicksLeft} ticks left`, this.canvas.width/2 - this.canvas.width/4 + this.canvas.width/8, this.canvas.height/2+this.canvas.height/12);
+            this.ctx.fillText("Calculating offline progress...", this.canvas.width/2 - this.canvas.width/3.5, this.canvas.height/2);
+            this.ctx.fillText(`${offlineProgressTicksLeft} ticks left`, this.canvas.width/2 - this.canvas.width/4 + this.canvas.width/16, this.canvas.height/2+this.canvas.height/12);
+            if (!rapidOfflineProgress) this.ctx.fillText(`Press T to toggle fast forward (less accurate)`, this.canvas.width/13, this.canvas.height/2+this.canvas.height/6);
             this.ctx.font = '10px sans-serif';
             return;
         }

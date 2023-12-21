@@ -165,6 +165,8 @@ Upgrade.prototype = {
     },
     
     draw: function(){
+        if (offlineProgressOn) return;
+
         let valueElem = this.tableElem.children[1];
         let cost = this.getCost();
         let maxBuy = this.getMaxBuyCount();

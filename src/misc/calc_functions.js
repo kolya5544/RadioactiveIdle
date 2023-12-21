@@ -21,12 +21,12 @@ function calc_board_size() {
 
 function calc_actual_speed(current_speed = null) {
     if (current_speed == null) current_speed = upgrades.get("speed");
-    return ((current_speed+5)/15) * calc_tickrate();
+    return ((current_speed+5)/15) * calc_tickrate() * offline_progress_speed_up();
 }
 
 function calc_actual_explosion_time(current_expl = null) {
     if (current_expl == null) current_expl = upgrades.get("time");
-    return ((current_expl+5)*12 - calc_faster_explosions()) / calc_tickrate();
+    return ((current_expl+5)*12 - calc_faster_explosions()) / calc_tickrate() * offline_progress_speed_up();
 }
 
 function calc_actual_explosion_size(current_size = null) {
@@ -156,5 +156,9 @@ function calc_this_reaction_lifetime() {
 }
 
 function calc_meltdown_output() {
-    return calc_energy_output(stats.getAll("chain")[3])*100*calc_tickrate() * calc_extremely_funny_2_reward();
+    return calc_energy_output(stats.getAll("chain")[3])*100*calc_tickrate() * calc_extremely_funny_2_reward() * offline_progress_speed_up();
+}
+
+function offline_progress_speed_up() {
+    return offlineProgressOn && rapidOfflineProgress ? 10 : 1;
 }

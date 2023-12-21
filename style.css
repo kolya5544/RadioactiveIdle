@@ -109,7 +109,7 @@ h1 {
 
 #scroll {
     position: absolute;
-    width: 400.1%; /*100% for each tab*/
+    width: 410%; /*100% for each tab*/
     transition: left 0.15s ease-in-out;
     display: inline-block;
 }

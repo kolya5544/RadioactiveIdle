@@ -91,7 +91,7 @@ h1 {
 
 #energyContainer {
     position: absolute;
-    right: 0px;
+    right: 6px;
 }
 
 #energy {
@@ -109,8 +109,9 @@ h1 {
 
 #scroll {
     position: absolute;
-    width: 400%; /*100% for each tab*/
+    width: 400.1%; /*100% for each tab*/
     transition: left 0.15s ease-in-out;
+    display: inline-block;
 }
 
 .screen {
@@ -314,8 +315,6 @@ h1 {
 
 .achievements {
     overflow: auto;
-    display: inline-block;
-    vertical-align: top;
 }
 
 .achievement {

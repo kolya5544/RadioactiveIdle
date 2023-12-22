@@ -46,7 +46,7 @@ Reactor.prototype = {
     
     draw: function(){
         if (offlineProgressOn) {
-            if (tickCount % 300 != 0 || rapidOfflineProgress) return;
+            if (tickCount % 300 != 0 && (!rapidOfflineProgress || tickCount % 123 < 110)) return;
             this.ctx.clearRect(0, 0, reactor.canvas.width, reactor.canvas.height);
             this.ctx.font = "48px serif";
             this.ctx.setTransform(this.canvas.width/this.width, 0,

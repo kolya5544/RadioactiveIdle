@@ -45,9 +45,9 @@ Reactor.prototype = {
     },
     
     draw: function(){
-        this.ctx.clearRect(0, 0, reactor.canvas.width, reactor.canvas.height);
-        
         if (offlineProgressOn) {
+            if (tickCount % 300 != 0) return;
+            this.ctx.clearRect(0, 0, reactor.canvas.width, reactor.canvas.height);
             this.ctx.font = "48px serif";
             this.ctx.setTransform(this.canvas.width/this.width, 0,
             0,this.canvas.height/this.height,
@@ -66,6 +66,8 @@ Reactor.prototype = {
             this.ctx.font = '10px sans-serif';
             return;
         }
+
+        this.ctx.clearRect(0, 0, reactor.canvas.width, reactor.canvas.height);
 
         this.mouse.draw();
         this.ctx.setTransform(this.canvas.width/this.width, 0,

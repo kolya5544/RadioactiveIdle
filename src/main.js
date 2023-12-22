@@ -205,6 +205,7 @@ function importGame(game) {
 }
 
 function prestige(){
+    upgrades.draw(true);
     if (!stats.sacrificedBefore) flash();
     stats.sacrificedBefore = true;
 
@@ -259,6 +260,7 @@ function prestige(){
 };
 
 function destroyReactor() {
+    upgrades.draw(true);
     if (!achievements.get("Nobody Will Believe You")) flash();
 
     var prev = stats.get("matter");
